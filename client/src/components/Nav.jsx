@@ -5,55 +5,95 @@ export default function Nav({ saveStatus, themeMode, onToggleTheme, onLockApp, o
   const dateStr = `${DOW_TH[now.getDay()]} ${now.getDate()} ${MONTH_EN[now.getMonth()]} ${now.getFullYear()}`;
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#111] h-[54px] flex items-center justify-between px-5 shadow-xl">
-      <div className="flex items-center gap-2.5 font-kanit font-bold text-[16px] text-white tracking-wide">
-        <div className="w-2 h-2 rounded-full bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400" />
-        HR Task Planner
-        {isAdmin && (
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E24B4A] text-white font-semibold">ADMIN</span>
-        )}
-      </div>
-      <div className="flex items-center gap-2.5">
-        {/* User info */}
-        {profile && (
-          <div className="hidden md:flex items-center gap-2 text-[#AAA] text-xs font-sarabun">
-            <span className="w-6 h-6 rounded-full bg-[#333] flex items-center justify-center text-white text-sm">
-              {(profile.display_name || profile.email || 'U')[0].toUpperCase()}
-            </span>
-            <span className="max-w-[120px] truncate">{profile.display_name || profile.email}</span>
+    <nav className="sticky top-0 z-50 glass border-b border-[#E5E7EB] dark:border-[#374151]">
+      <div className="flex items-center justify-between px-5 py-3">
+        {/* Logo Section */}
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1D9E75] to-[#10B981] flex items-center justify-center shadow-lg">
+              <span className="text-white text-lg">📋</span>
+            </div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#10B981] border-2 border-white dark:border-[#1F2937] animate-pulse" />
           </div>
-        )}
+          <div>
+            <div className="font-display font-bold text-lg text-[#1F2937] dark:text-[#F3F4F6] tracking-tight">
+              HR Task Planner
+            </div>
+            <div className="text-[11px] text-[#6B7280] dark:text-[#9CA3AF] font-medium">
+              {isAdmin ? '👑 Admin' : 'Workspace'}
+            </div>
+          </div>
+        </div>
 
-        {onLockApp && (
+        {/* Right Section */}
+        <div className="flex items-center gap-2">
+          {/* User Profile */}
+          {profile && (
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#F3F4F6] dark:bg-[#374151]">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#E67E22] to-[#F39C12] flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                {(profile.display_name || profile.email || 'U')[0].toUpperCase()}
+              </div>
+              <span className="text-sm font-medium text-[#374151] dark:text-[#D1D5DB] max-w-[100px] truncate">
+                {profile.display_name || profile.email?.split('@')[0]}
+              </span>
+            </div>
+          )}
+
+          {/* Lock Button */}
+          {onLockApp && (
+            <button
+              onClick={onLockApp}
+              title="Lock App"
+              className="p-2 rounded-xl bg-[#F3F4F6] dark:bg-[#374151] text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#E5E7EB] dark:hover:bg-[#4B5563] transition-all"
+            >
+              🔒
+            </button>
+          )}
+
+          {/* Theme Toggle */}
           <button
-            onClick={onLockApp}
-            title="Lock App with Tic-Tac-Toe Security Gate"
-            className="px-2.5 py-1 rounded-full bg-[#262626] border border-[#444] text-[#AAA] hover:text-white text-[12px] font-sarabun font-semibold hover:bg-[#333] transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+            onClick={onToggleTheme}
+            className="p-2 rounded-xl bg-[#F3F4F6] dark:bg-[#374151] text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#E5E7EB] dark:hover:bg-[#4B5563] transition-all"
           >
-            🔒 <span className="hidden lg:inline">Lock</span>
+            {themeMode === 'dark' ? '☀️' : '🌙'}
           </button>
-        )}
-        <button
-          onClick={onToggleTheme}
-          className="px-3 py-1 rounded-full bg-[#262626] border border-[#444] text-white text-[12px] font-sarabun font-semibold hover:bg-[#333] transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
-        >
-          {themeMode === 'dark' ? '☀️ Light' : '🌙 Dark'}
-        </button>
-        <span className="text-[#AAA] text-xs font-sarabun hidden sm:inline">{dateStr}</span>
-        <span
-          className={`text-[11px] px-2.5 py-1 rounded-full bg-[#1D9E75] text-white font-semibold
-            transition-opacity duration-400 ${saveStatus === 'saving' || saveStatus === 'saved' ? 'opacity-100' : 'opacity-0'}`}
-        >
-          {saveStatus === 'saving' ? '💾 Saving…' : '✓ Saved'}
-        </span>
-        {onSignOut && (
-          <button
-            onClick={onSignOut}
-            className="px-3 py-1 rounded-full border border-[#E24B4A] text-[#E24B4A] text-[12px] font-sarabun font-semibold hover:bg-[#E24B4A] hover:text-white transition-all cursor-pointer"
-          >
-            Sign Out
-          </button>
-        )}
+
+          {/* Date Display */}
+          <div className="hidden md:block text-[11px] text-[#9CA3AF] dark:text-[#6B7280] px-2">
+            {dateStr}
+          </div>
+
+          {/* Save Status */}
+          <div className={`
+            flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300
+            ${saveStatus === 'saving' || saveStatus === 'saved'
+              ? 'bg-[#D1FAE5] dark:bg-[#052E16] text-[#065F46] dark:text-[#6EE7B7]'
+              : 'bg-[#F3F4F6] dark:bg-[#374151] text-[#9CA3AF]'
+            }
+          `}>
+            {saveStatus === 'saving' ? (
+              <>
+                <span className="animate-spin">⏳</span>
+                <span>Saving...</span>
+              </>
+            ) : saveStatus === 'saved' ? (
+              <>
+                <span>✓</span>
+                <span>Saved</span>
+              </>
+            ) : null}
+          </div>
+
+          {/* Sign Out */}
+          {onSignOut && (
+            <button
+              onClick={onSignOut}
+              className="px-4 py-2 rounded-xl bg-white dark:bg-[#374151] border border-[#E5E7EB] dark:border-[#4B5563] text-[#374151] dark:text-[#D1D5DB] text-sm font-medium hover:bg-[#FEE2E2] hover:border-[#EF4444] hover:text-[#EF4444] dark:hover:bg-[#450A0A] dark:hover:border-[#EF4444] transition-all"
+            >
+              Sign Out
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

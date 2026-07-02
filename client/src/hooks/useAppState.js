@@ -3,21 +3,20 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth.jsx';
 import {
   uid, getTH, getCycleInfoForDate, getYearMonthKey,
-  buildDefaultWeekState, ALL_DAYS, WEEK_EXTRA,
+  buildDefaultWeekState, ALL_DAYS,
   getDay30Info, getDatesForWeek, getNumWeeksInMonth, dowToName,
 } from '../lib/constants';
 
-// Ensure all week/day slots exist
+// Ensure all week/day slots exist (4-week system)
 function ensureWeekState(ws) {
   const out = { ...ws };
-  for (let w = 1; w <= 5; w++) {
+  for (let w = 1; w <= 4; w++) {
     if (!out[w]) out[w] = {};
     ALL_DAYS.forEach(day => {
       if (!out[w][day]) {
-        const extras = (WEEK_EXTRA[w] && WEEK_EXTRA[w][day]) || [];
         out[w][day] = {
           routineDone: {},
-          editTasks: extras.map(t => ({ id: uid(), text: t.text, time: t.time, done: false })),
+          editTasks: [],
         };
       }
     });

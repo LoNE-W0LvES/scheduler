@@ -115,18 +115,22 @@ function AppContent() {
       <MonthBar
         viewYear={state.viewYear}
         viewMonth={state.viewMonth}
+        currentWeek={state.currentWeek}
         onPrev={() => navMonth(-1)}
         onNext={() => navMonth(1)}
-        onToday={() => { goToToday(); toast('🎯 Jumped to today'); }}
+        onToday={() => { goToToday(); toast('Jumped to today'); }}
       />
 
       {/* Tabs */}
-      <div className="flex gap-1.5 px-5 pt-3 pb-0 overflow-x-auto scrollbar-none" style={{ scrollbarWidth:'none' }}>
+      <div className="flex gap-2 px-5 py-3 overflow-x-auto scrollbar-none border-b border-[#E5E7EB] dark:border-[#374151] bg-white dark:bg-[#1F2937]">
         {visibleTabs.map(({ id, label, activeClass }) => (
           <button key={id}
             onClick={() => setActiveTab(id)}
-            className={`px-4 py-1.5 rounded-full border text-[13px] font-sarabun font-medium whitespace-nowrap cursor-pointer transition-all
-              ${activeTab === id ? activeClass : 'bg-white dark:bg-[#1E1E1E] border-[#E2E0D8] dark:border-[#333] text-[#444] dark:text-[#CCC] hover:border-[#AAA]'}`}>
+            className={`px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-all whitespace-nowrap
+              ${activeTab === id
+                ? activeClass + ' text-white shadow-md'
+                : 'bg-[#F3F4F6] dark:bg-[#374151] text-[#374151] dark:text-[#D1D5DB] hover:bg-[#E5E7EB] dark:hover:bg-[#4B5563]'
+              }`}>
             {label}
           </button>
         ))}

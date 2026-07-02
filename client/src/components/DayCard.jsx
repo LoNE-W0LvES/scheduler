@@ -1,58 +1,58 @@
 import { useState } from 'react';
-import {
-  DC, IMPORT_DAYS, isSameDay, fmtDateShort, getTH,
-} from '../lib/constants';
+import { DC, isSameDay, fmtDateShort, getTH } from '../lib/constants';
 
 function Pill({ cls, children }) {
   return (
-    <span className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-[1px] rounded font-semibold ${cls}`}>
+    <span className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-semibold ${cls}`}>
       {children}
     </span>
   );
 }
 
 export default function DayCard({
-  week, day, date,
+  week, day, date, dayOfMonth,
   routine, dayState, day30Info,
   onToggleRoutine, onToggleEditTask, onAddEditTask, onDeleteEditTask, onUpdateEditTask,
   toast,
+  isCurrentMonth = true,
 }) {
   const dc = DC[day];
   const today = getTH();
   const isToday = isSameDay(date, today);
   const isSunday = day === 'Sunday';
 
-  const [adding, setAdding]       = useState(false);
-  const [addText, setAddText]     = useState('');
-  const [addTime, setAddTime]     = useState('');
-  const [editId, setEditId]       = useState(null);
-  const [editText, setEditText]   = useState('');
-  const [editTime, setEditTime]   = useState('');
+  const [adding, setAdding] = useState(false);
+  const [addText, setAddText] = useState('');
+  const [addTime, setAddTime] = useState('');
+  const [editId, setEditId] = useState(null);
+  const [editText, setEditText] = useState('');
+  const [editTime, setEditTime] = useState('');
 
   const s = dayState || { routineDone: {}, editTasks: [] };
   const total = routine.length + s.editTasks.length;
-  const done  = routine.filter((_, i) => s.routineDone[i]).length + s.editTasks.filter(t => t.done).length;
+  const done = routine.filter((_, i) => s.routineDone[i]).length + s.editTasks.filter(t => t.done).length;
+  const progressPct = total ? Math.round((done / total) * 100) : 0;
 
-  const borderStyle = isToday
-    ? { boxShadow: `0 0 0 2.5px ${dc.c}, 0 6px 32px rgba(0,0,0,.12)`, borderColor: dc.c }
-    : {};
-
+  // Sunday card (day off)
   if (isSunday) {
     return (
-      <div className="bg-white rounded-[14px] border-[1.5px] border-[#E2E0D8] shadow-sm overflow-hidden opacity-65">
+      <div className="card-static overflow-hidden opacity-60">
         <div className="px-4 py-3 flex items-center justify-between" style={{ background: dc.bg }}>
           <div>
-            <div className="font-kanit font-semibold text-sm" style={{ color: dc.hdr }}>
-              Sunday <span className="opacity-60 font-normal text-xs">({dc.th})</span>
-              {isToday && <span className="ml-1 text-[10px] px-2 py-[1px] rounded-full text-white font-bold" style={{ background: dc.c }}>Today</span>}
+            <div className="font-display font-semibold text-base" style={{ color: dc.hdr }}>
+              {day}
+              <span className="opacity-50 font-normal text-xs ml-1">({dc.th})</span>
+              {isToday && (
+                <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-[#95A5A6] text-white">Today</span>
+              )}
             </div>
-            <div className="text-[11px] opacity-70 mt-px" style={{ color: dc.hdr }}>{fmtDateShort(date)}</div>
+            <div className="text-xs opacity-60 mt-0.5" style={{ color: dc.hdr }}>{fmtDateShort(date)}</div>
           </div>
-          <div className="text-[13px] font-bold px-2.5 py-1 rounded-full" style={{ color: dc.hdr, background: 'rgba(255,255,255,.55)' }}>หยุด</div>
+          <div className="text-xl opacity-40">😴</div>
         </div>
-        <div className="px-4 py-5 text-center">
-          <div className="text-4xl opacity-40">😴</div>
-          <div className="text-xs text-[#999] mt-1">วันหยุด — Head office ปิด</div>
+        <div className="px-4 py-6 text-center">
+          <div className="text-3xl mb-2">🏖️</div>
+          <div className="text-xs text-[#6B7280]">Day Off</div>
         </div>
       </div>
     );
@@ -60,10 +60,15 @@ export default function DayCard({
 
   function handleAddSubmit(e) {
     e.preventDefault();
-    if (!addText.trim()) { setAdding(false); return; }
+    if (!addText.trim()) {
+      setAdding(false);
+      return;
+    }
     onAddEditTask(week, day, addText.trim(), addTime.trim());
-    setAddText(''); setAddTime(''); setAdding(false);
-    toast('✓ Task added');
+    setAddText('');
+    setAddTime('');
+    setAdding(false);
+    toast('Task added');
   }
 
   function handleEditSubmit(e, taskId) {
@@ -72,7 +77,7 @@ export default function DayCard({
       onUpdateEditTask(week, day, taskId, editText.trim(), editTime.trim());
     }
     setEditId(null);
-    toast('✓ Task updated');
+    toast('Task updated');
   }
 
   function startEdit(task) {
@@ -83,121 +88,194 @@ export default function DayCard({
 
   return (
     <div
-      className={`bg-white rounded-[14px] border-[1.5px] border-[#E2E0D8] shadow-sm overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg`}
-      style={borderStyle}
+      className={`card overflow-hidden transition-all duration-300 ${!isCurrentMonth ? 'opacity-70' : ''}`}
+      style={isToday ? { boxShadow: `0 0 0 3px ${dc.c}, var(--shadow-lg)` } : {}}
     >
-      {/* Header */}
-      <div className="px-4 py-3 flex items-center justify-between" style={{ background: dc.bg }}>
+      {/* Header with gradient */}
+      <div
+        className="px-4 py-3 flex items-center justify-between"
+        style={{ background: `linear-gradient(135deg, ${dc.bg}, ${dc.bg}ee)` }}
+      >
         <div>
-          <div className="font-kanit font-semibold text-sm flex items-center gap-1" style={{ color: dc.hdr }}>
-            {day}
-            <span className="opacity-60 font-normal text-xs">({dc.th})</span>
+          <div className="font-display font-semibold text-base flex items-center gap-1.5" style={{ color: dc.hdr }}>
+            <span className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm"
+              style={{ background: dc.gradient || dc.c }}>
+              {dayOfMonth || date.getDate()}
+            </span>
+            <span>{day}</span>
+            <span className="opacity-50 font-normal text-xs">({dc.th})</span>
             {isToday && (
-              <span className="text-[10px] px-2 py-[1px] rounded-full text-white font-bold" style={{ background: dc.c }}>Today</span>
+              <span className="ml-1 text-[10px] px-2 py-0.5 rounded-full text-white font-semibold"
+                style={{ background: dc.c }}>Today</span>
             )}
           </div>
-          <div className="text-[11px] opacity-70 mt-px" style={{ color: dc.hdr }}>{fmtDateShort(date)}</div>
+          <div className="text-xs opacity-60 mt-0.5" style={{ color: dc.hdr }}>{fmtDateShort(date)}</div>
         </div>
-        <div className="text-[13px] font-bold px-2.5 py-1 rounded-full" style={{ color: dc.hdr, background: 'rgba(255,255,255,.55)' }}>
-          {done}/{total}
+        {/* Progress badge */}
+        <div className="flex items-center gap-2">
+          <div className="w-12 h-1.5 rounded-full bg-white/30 overflow-hidden">
+            <div className="h-full rounded-full transition-all duration-500"
+              style={{ width: `${progressPct}%`, background: dc.gradient || dc.c }} />
+          </div>
+          <span className="text-sm font-bold px-2.5 py-1 rounded-lg bg-white/60"
+            style={{ color: dc.c }}>{done}/{total}</span>
         </div>
       </div>
 
       {/* Body */}
       <div className="px-4 py-3">
-        {/* Import badge */}
-        {IMPORT_DAYS.includes(day) && (
-          <div className="text-[10px] font-bold text-[#085041] bg-[#D4F4E8] rounded px-2 py-[2px] inline-flex items-center gap-1 mb-2">
-            ↻ Import day (every 3 days)
-          </div>
-        )}
-
-        {/* Routine tasks */}
-        <div className="text-[10px] font-bold tracking-widest uppercase text-[#888] flex items-center gap-1 mb-1.5">
-          🔒 Repeating tasks
+        {/* Locked routines */}
+        <div className="text-[11px] font-bold tracking-wide uppercase text-[#6B7280] dark:text-[#9CA3AF] flex items-center gap-1.5 mb-2">
+          <span>Recurring</span>
         </div>
+
         {routine.map((t, i) => {
           const isDone = !!s.routineDone[i];
           return (
             <div
               key={t.id || i}
-              onClick={() => { onToggleRoutine(week, day, i); toast(s.routineDone[i] ? '↩ Unmarked' : '✓ Done!'); }}
-              className="flex items-start gap-2 py-1.5 px-1.5 rounded-lg cursor-pointer hover:bg-[#F5F4F0] transition-colors group -mx-1.5"
+              onClick={() => {
+                onToggleRoutine(week, day, i);
+                toast(s.routineDone[i] ? 'Unmarked' : 'Done!');
+              }}
+              className="flex items-start gap-3 py-2 px-2 rounded-xl cursor-pointer hover:bg-[#F3F4F6] dark:hover:bg-[#374151] transition-all group -mx-2"
             >
-              <div className="w-[9px] h-[9px] rounded-full flex-shrink-0 mt-[4px] transition-transform group-hover:scale-125"
-                style={{ background: isDone ? '#1D9E75' : dc.c }} />
+              {/* Checkbox dot */}
+              <div
+                className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center transition-all group-hover:scale-110"
+                style={{
+                  background: isDone ? 'linear-gradient(135deg, #10B981, #059669)' : (dc.gradient || dc.c),
+                  boxShadow: isDone ? '0 2px 8px rgba(16, 185, 129, 0.4)' : 'none'
+                }}
+              >
+                {isDone && <span className="text-white text-xs">✓</span>}
+              </div>
+              {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className={`text-[12.5px] leading-snug ${isDone ? 'line-through text-[#888]' : 'text-[#111]'}`}>
+                <div className={`text-sm leading-snug ${isDone ? 'line-through text-[#9CA3AF]' : 'text-[#1F2937] dark:text-[#F3F4F6]'}`}>
                   {t.text}
                 </div>
-                <div className="flex gap-1 mt-0.5 flex-wrap">
-                  {t.time && <Pill cls={t.cls || 'tp-gen'}>⏰ {t.time}</Pill>}
-                  {t.week === 'day30' && <Pill cls="bg-[#FFE0E0] text-[#C0000A]">📅 วันที่ 30</Pill>}
-                  <Pill cls="bg-[#F1EFE8] text-[#888]">🔒</Pill>
+                <div className="flex gap-1.5 mt-1 flex-wrap">
+                  {t.time && <Pill cls={t.cls || 'tp-gen'}>{t.time}</Pill>}
+                  {t.week === 'day30' && <Pill cls="badge-error">Day 30</Pill>}
                 </div>
               </div>
             </div>
           );
         })}
 
-        <hr className="border-[#F0EFEB] my-2.5" />
+        <hr className="border-[#E5E7EB] dark:border-[#374151] my-3" />
 
-        {/* Editable tasks */}
-        <div className="text-[10px] font-bold tracking-widest uppercase text-[#888] flex items-center gap-1 mb-1.5">
-          ✏️ Editable tasks
+        {/* Custom tasks */}
+        <div className="text-[11px] font-bold tracking-wide uppercase text-[#6B7280] dark:text-[#9CA3AF] flex items-center gap-1.5 mb-2">
+          <span>Custom Tasks</span>
         </div>
+
         {s.editTasks.map(task => {
           if (editId === task.id) {
             return (
               <form key={task.id} onSubmit={e => handleEditSubmit(e, task.id)}
-                className="flex items-center gap-1.5 py-1 -mx-1">
-                <div className="w-[9px] h-[9px] rounded-full flex-shrink-0" style={{ background: dc.c }} />
-                <input className="flex-1 text-[12px] border-b border-[#AAA] bg-transparent outline-none py-0.5 text-[#111]"
-                  value={editText} onChange={e => setEditText(e.target.value)} placeholder="Task name…" autoFocus />
-                <input className="w-[100px] text-[11px] border-b border-[#AAA] bg-transparent outline-none py-0.5 text-[#444]"
-                  value={editTime} onChange={e => setEditTime(e.target.value)} placeholder="09:00–10:00" />
-                <button type="submit" className="text-[11px] px-2 py-0.5 bg-[#1D9E75] text-white rounded cursor-pointer">✓</button>
-                <button type="button" onClick={() => setEditId(null)} className="text-[11px] px-2 py-0.5 border border-[#DDD] rounded cursor-pointer">✕</button>
+                className="flex items-center gap-2 py-2 -mx-2">
+                <div className="w-5 h-5 rounded-full flex-shrink-0" style={{ background: dc.c }} />
+                <input
+                  className="flex-1 text-sm border-b-2 border-[#1D9E75] bg-transparent outline-none py-1 text-[#1F2937] dark:text-[#F3F4F6]"
+                  value={editText}
+                  onChange={e => setEditText(e.target.value)}
+                  placeholder="Task name..."
+                  autoFocus
+                />
+                <input
+                  className="w-[100px] text-xs border-b border-[#D1D5DB] dark:border-[#4B5563] bg-transparent outline-none py-1 text-[#6B7280] dark:text-[#9CA3AF]"
+                  value={editTime}
+                  onChange={e => setEditTime(e.target.value)}
+                  placeholder="09:00"
+                />
+                <button type="submit" className="text-xs px-2.5 py-1 rounded-lg bg-[#1D9E75] text-white font-semibold hover:bg-[#059669] transition-colors">
+                  Save
+                </button>
+                <button type="button" onClick={() => setEditId(null)} className="text-xs px-2.5 py-1 rounded-lg border border-[#E5E7EB] dark:border-[#374151] text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#F3F4F6] dark:hover:bg-[#374151] transition-colors">
+                  Cancel
+                </button>
               </form>
             );
           }
+
           return (
-            <div key={task.id}
-              className="flex items-start gap-2 py-1.5 px-1.5 rounded-lg cursor-pointer hover:bg-[#F5F4F0] transition-colors group -mx-1.5"
-              onClick={e => { if (e.target.closest('.del-btn')) return; onToggleEditTask(week, day, task.id); toast(task.done ? '↩ Unmarked' : '✓ Done!'); }}
+            <div
+              key={task.id}
+              className="flex items-start gap-3 py-2 px-2 rounded-xl cursor-pointer hover:bg-[#F3F4F6] dark:hover:bg-[#374151] transition-all group -mx-2"
+              onClick={e => {
+                if (e.target.closest('.del-btn') || e.target.closest('.edit-btn')) return;
+                onToggleEditTask(week, day, task.id);
+                toast(task.done ? 'Unmarked' : 'Done!');
+              }}
               onDoubleClick={() => startEdit(task)}
             >
-              <div className="w-[9px] h-[9px] rounded-full flex-shrink-0 mt-[4px] transition-transform group-hover:scale-125"
-                style={{ background: task.done ? '#1D9E75' : dc.c }} />
+              <div
+                className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center transition-all group-hover:scale-110"
+                style={{
+                  background: task.done ? 'linear-gradient(135deg, #10B981, #059669)' : (dc.gradient || dc.c),
+                  boxShadow: task.done ? '0 2px 8px rgba(16, 185, 129, 0.4)' : 'none'
+                }}
+              >
+                {task.done && <span className="text-white text-xs">✓</span>}
+              </div>
               <div className="flex-1 min-w-0">
-                <div className={`text-[12.5px] leading-snug ${task.done ? 'line-through text-[#888]' : 'text-[#111]'}`}>
+                <div className={`text-sm leading-snug ${task.done ? 'line-through text-[#9CA3AF]' : 'text-[#1F2937] dark:text-[#F3F4F6]'}`}>
                   {task.text}
                 </div>
-                {task.time && <Pill cls="tp-gen">⏰ {task.time}</Pill>}
+                {task.time && <Pill cls="tp-gen">{task.time}</Pill>}
               </div>
-              <button className="del-btn opacity-0 group-hover:opacity-100 text-[#CCC] hover:text-[#E24B4A] text-xs transition-all ml-1 cursor-pointer"
-                onClick={e => { e.stopPropagation(); onDeleteEditTask(week, day, task.id); toast('🗑 Deleted'); }}>
-                ✕
-              </button>
+              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={e => { e.stopPropagation(); startEdit(task); }}
+                  className="edit-btn text-xs px-2 py-1 rounded-lg text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#E5E7EB] dark:hover:bg-[#4B5563] transition-colors"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={e => { e.stopPropagation(); onDeleteEditTask(week, day, task.id); toast('Deleted'); }}
+                  className="del-btn text-xs px-2 py-1 rounded-lg text-[#EF4444] hover:bg-[#FEE2E2] dark:hover:bg-[#450A0A] transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           );
         })}
 
-        {/* Add task row */}
+        {/* Add task */}
         {adding ? (
-          <form onSubmit={handleAddSubmit} className="flex items-center gap-1.5 mt-2 -mx-1">
-            <div className="w-[9px] h-[9px] rounded-full flex-shrink-0" style={{ background: dc.c }} />
-            <input autoFocus className="flex-1 text-[12px] border-b border-[#AAA] bg-transparent outline-none py-0.5 text-[#111]"
-              value={addText} onChange={e => setAddText(e.target.value)} placeholder="Task name… (Enter to save)" />
-            <input className="w-[100px] text-[11px] border-b border-[#AAA] bg-transparent outline-none py-0.5 text-[#444]"
-              value={addTime} onChange={e => setAddTime(e.target.value)} placeholder="09:00–10:00" />
-            <button type="submit" className="text-[11px] px-2 py-0.5 bg-[#1D9E75] text-white rounded cursor-pointer">✓</button>
-            <button type="button" onClick={() => setAdding(false)} className="text-[11px] px-2 py-0.5 border border-[#DDD] rounded cursor-pointer">✕</button>
+          <form onSubmit={handleAddSubmit} className="flex items-center gap-2 mt-3 -mx-2">
+            <div className="w-5 h-5 rounded-full flex-shrink-0" style={{ background: dc.c }} />
+            <input
+              autoFocus
+              className="flex-1 text-sm border-b-2 border-[#1D9E75] bg-transparent outline-none py-1 text-[#1F2937] dark:text-[#F3F4F6]"
+              value={addText}
+              onChange={e => setAddText(e.target.value)}
+              placeholder="Task name..."
+            />
+            <input
+              className="w-[80px] text-xs border-b border-[#D1D5DB] dark:border-[#4B5563] bg-transparent outline-none py-1 text-[#6B7280] dark:text-[#9CA3AF]"
+              value={addTime}
+              onChange={e => setAddTime(e.target.value)}
+              placeholder="Time"
+            />
+            <button type="submit" className="text-xs px-2.5 py-1 rounded-lg bg-[#1D9E75] text-white font-semibold hover:bg-[#059669] transition-colors">
+              Add
+            </button>
+            <button type="button" onClick={() => setAdding(false)} className="text-xs px-2.5 py-1 rounded-lg border border-[#E5E7EB] dark:border-[#374151] text-[#6B7280] dark:text-[#9CA3AF] hover:bg-[#F3F4F6] dark:hover:bg-[#374151] transition-colors">
+              Cancel
+            </button>
           </form>
         ) : (
-          <button onClick={() => setAdding(true)}
-            className="mt-2 text-[11px] text-[#888] hover:text-[#111] flex items-center gap-1 cursor-pointer transition-colors">
-            <span className="text-base leading-none" style={{ color: dc.c }}>+</span> Add task
+          <button
+            onClick={() => setAdding(true)}
+            className="mt-3 text-xs text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#1D9E75] dark:hover:text-[#10B981] flex items-center gap-1.5 transition-colors font-medium"
+          >
+            <span className="w-5 h-5 rounded-lg flex items-center justify-center text-white text-base leading-none"
+              style={{ background: dc.gradient || dc.c }}>+</span>
+            Add custom task
           </button>
         )}
       </div>

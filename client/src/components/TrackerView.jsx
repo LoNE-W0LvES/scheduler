@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import {
   WORK_DAYS, getDay30Info, getDatesForWeek, getNumWeeksInMonth,
-  getRoutinesForDay, dowToName, WEEK_EXTRA, uid,
+  getRoutinesForDay, dowToName,
 } from '../lib/constants';
 
 function buildEntries(viewYear, viewMonth, monthData, customRoutine, lockedRoutines) {
@@ -16,14 +16,9 @@ function buildEntries(viewYear, viewMonth, monthData, customRoutine, lockedRouti
       const dayName = dowToName(date.getDay());
       if (dayName === 'Sunday') return;
 
-      getRoutinesForDay(dayName, w, d30, customRoutine, lockedRoutines).forEach((t, i) => {
+      const dayOfMonth = date.getDate();
+      getRoutinesForDay(dayName, w, d30, customRoutine, lockedRoutines, dayOfMonth).forEach((t, i) => {
         const id = `r_${w}_${dayName}_${i}`;
-        entries.push({ id, week: w, day: dayName, time: t.time, text: t.text, status: ts[id] || 'pending' });
-      });
-
-      const extras = (WEEK_EXTRA[w] && WEEK_EXTRA[w][dayName]) || [];
-      extras.forEach((t, i) => {
-        const id = `e_${w}_${dayName}_${i}`;
         entries.push({ id, week: w, day: dayName, time: t.time, text: t.text, status: ts[id] || 'pending' });
       });
     });
