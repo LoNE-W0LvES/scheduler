@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mon-c:#B8660E; --mon-bg:#FDF3E3;
+  --tue-c:#C0365A; --tue-bg:#FDE8EF;
+  --wed-c:#3A7D0A; --wed-bg:#E8F5DC;
+  --thu-c:#C07208; --thu-bg:#FEF4E2;
+  --fri-c:#1A5FA8; --fri-bg:#E3EFF9;
+  --sat-c:#5B4EC8; --sat-bg:#EDEAFC;
+  --green:#1D9E75;  --green-bg:#E1F5EE;
+  --red:#E24B4A;
+  --ink:#111111; --ink2:#444444; --ink3:#888888;
+  --paper:#F7F6F2; --white:#FFFFFF;
+  --border:#E2E0D8;
+  --shadow:0 2px 16px rgba(0,0,0,.07);
+  --shadow-lg:0 6px 32px rgba(0,0,0,.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Sarabun', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+/* ── scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
+
+/* ── animations ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.fade-up { animation: fadeUp .25s ease; }
+
+/* ── pill tags ── */
+.tp-mtg  { background:#FAECE7; color:#712B13; }
+.tp-imp  { background:#D4F4E8; color:#085041; }
+.tp-am   { background:#E3EFF9; color:#0C447C; }
+.tp-pm   { background:#FEF3E6; color:#633806; }
+.tp-gen  { background:#F1EFE8; color:#444; }
+.tp-dead { background:#FAECE7; color:#7A1A0A; font-weight:700; }
+
+/* ── tracker table ── */
+.tr-table { border-collapse: separate; border-spacing: 0; }
+.tr-table th { background:#111; color:#fff; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:10px 12px; text-align:left; }
+.tr-table td { padding:9px 12px; border-bottom:1px solid #F2F1ED; font-size:12.5px; vertical-align:middle; }
+.tr-table tr:last-child td { border-bottom:none; }
+.tr-table tr:hover td { background:#FAFAF7; }
+.tr-table tr.row-done td { background:#F2FBF7; }
+
+/* ── Dark Mode Overrides ── */
+.dark {
+  --mon-bg:#2A1B10; --mon-c:#F39C38;
+  --tue-bg:#2B141E; --tue-c:#F2688D;
+  --wed-bg:#192613; --wed-c:#83C84E;
+  --thu-bg:#2A1F11; --thu-c:#EBA038;
+  --fri-bg:#142230; --fri-c:#589DE0;
+  --sat-bg:#1D1933; --sat-c:#8C80F2;
+  --green:#26D09A;  --green-bg:#133228;
+  --red:#F56868;
+  --ink:#F0F0F0; --ink2:#CCCCCC; --ink3:#999999;
+  --paper:#121212; --white:#1E1E1E;
+  --border:#333333;
+  --shadow:0 2px 16px rgba(0,0,0,.45);
+  --shadow-lg:0 6px 32px rgba(0,0,0,.6);
+}
+
+.dark body, .dark .bg-\[\#F7F6F2\] { background-color: #121212 !important; color: #F0F0F0 !important; }
+.dark .bg-white { background-color: #1E1E1E !important; color: #F0F0F0; }
+.dark .border-\[\#E2E0D8\] { border-color: #333333 !important; }
+.dark .text-\[\#111\], .dark .text-\[\#222\], .dark .text-\[\#333\] { color: #F0F0F0 !important; }
+.dark .text-\[\#444\], .dark .text-\[\#555\], .dark .text-\[\#666\] { color: #CCCCCC !important; }
+.dark .text-\[\#888\], .dark .text-\[\#999\], .dark .text-\[\#AAA\] { color: #999999 !important; }
+.dark .bg-\[\#FAFAFA\], .dark .bg-\[\#F9F9F9\], .dark .bg-\[\#F0EFEB\] { background-color: #262626 !important; }
+.dark .border-\[\#F2F1ED\], .dark .border-\[\#EEE\] { border-color: #2D2D2D !important; }
+.dark input, .dark select, .dark textarea { background-color: #1E1E1E !important; color: #F0F0F0 !important; border-color: #444 !important; }
+.dark .tr-table th { background: #0A0A0A !important; }
+.dark .tr-table td { border-bottom-color: #2D2D2D !important; }
+.dark .tr-table tr:hover td { background: #262626 !important; }
+.dark .tr-table tr.row-done td { background: #133228 !important; }
+.dark .tp-mtg  { background:#3D1D12; color:#F5B099; }
+.dark .tp-imp  { background:#163A2D; color:#85E5C4; }
+.dark .tp-am   { background:#17324D; color:#9ACCF8; }
+.dark .tp-pm   { background:#3D2610; color:#F5C799; }
+.dark .tp-gen  { background:#262626; color:#CCC; }
+.dark .tp-dead { background:#4A1810; color:#F58876; }
+
+.dark [style*="color: #111"],
+.dark [style*="color:#111"],
+.dark [style*="color: rgb(17, 17, 17)"],
+.dark [style*="color: #222"],
+.dark [style*="color:#222"],
+.dark [style*="color: rgb(34, 34, 34)"] {
+  color: #F0F0F0 !important;
+}
