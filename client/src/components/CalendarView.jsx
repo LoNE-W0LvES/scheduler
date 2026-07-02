@@ -7,7 +7,7 @@ import {
 const DOW_LABELS = ['จ','อ','พ','พฤ','ศ','ส','อา'];
 
 export default function CalendarView({ state, monthData, getDayStats, toast }) {
-  const { viewYear, viewMonth, customRoutine } = state;
+  const { viewYear, viewMonth, customRoutine, lockedRoutines } = state;
   const [selected, setSelected] = useState(null);
 
   const today = getTH();
@@ -25,7 +25,7 @@ export default function CalendarView({ state, monthData, getDayStats, toast }) {
   let selTasks = [];
   if (selected) {
     const dayName = dowToName(selected.date.getDay());
-    const routine = getRoutinesForDay(dayName, selected.week, day30Info, customRoutine);
+    const routine = getRoutinesForDay(dayName, selected.week, day30Info, customRoutine, lockedRoutines);
     const ws = monthData?.weekState;
     const s  = ws?.[selected.week]?.[dayName] || { routineDone: {}, editTasks: [] };
     const dc = DC[dayName];
@@ -53,7 +53,7 @@ export default function CalendarView({ state, monthData, getDayStats, toast }) {
           const isSel   = selected && isSameDay(date, selected.date);
           const dc = DC[dayName];
 
-          const routine = getRoutinesForDay(dayName, week, day30Info, customRoutine);
+          const routine = getRoutinesForDay(dayName, week, day30Info, customRoutine, lockedRoutines);
           const ws = monthData?.weekState;
           const s  = ws?.[week]?.[dayName] || { routineDone: {}, editTasks: [] };
           const stats = getDayStats(week, dayName, routine);

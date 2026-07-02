@@ -3,14 +3,14 @@ import {
   getTH, getCycleInfoForDate, getDay30Info, getDatesForWeek,
   getNumWeeksInMonth, getRoutinesForDay, dowToName, MONTH_EN, WEEK_CTX,
 } from '../lib/constants';
-3
+
 export default function WeeklyView({
   state, currentWeek, onWeekChange, monthData,
   onToggleRoutine, onToggleEditTask, onAddEditTask, onDeleteEditTask, onUpdateEditTask,
   getAllStats, getDayStats,
   toast,
 }) {
-  const { viewYear, viewMonth, customRoutine } = state;
+  const { viewYear, viewMonth, customRoutine, lockedRoutines } = state;
   const numWeeks  = getNumWeeksInMonth(viewYear, viewMonth);
   const day30Info = getDay30Info(viewYear, viewMonth);
   const today     = getTH();
@@ -25,7 +25,7 @@ export default function WeeklyView({
   if (todayCycle.year === viewYear && todayCycle.month === viewMonth) {
     const dayName = dowToName(today.getDay());
     if (dayName !== 'Sunday') {
-      const r = getRoutinesForDay(dayName, todayCycle.week, day30Info, customRoutine);
+      const r = getRoutinesForDay(dayName, todayCycle.week, day30Info, customRoutine, lockedRoutines);
       const s = getDayStats(todayCycle.week, dayName, r);
       todayTotal = s.total; todayDone = s.done;
     }
@@ -80,7 +80,7 @@ export default function WeeklyView({
       </div>
 
       {/* Context bar */}
-      <div className="text-[12px] px-3.5 py-2 rounded-lg border-l-[3px] mb-4 bg-white"
+      <div className="text-[12px] px-3.5 py-2 rounded-lg border-l-[3px] mb-4 bg-white dark:bg-[#1E1E1E]"
         style={{ borderLeftColor: ctx.c, color: ctx.c }}>
         {ctx.t}
       </div>
@@ -89,7 +89,7 @@ export default function WeeklyView({
       <div className="grid gap-2.5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
         {weekDates.map((date, idx) => {
           const dayName = dowToName(date.getDay());
-          const routine = getRoutinesForDay(dayName, currentWeek, day30Info, customRoutine);
+          const routine = getRoutinesForDay(dayName, currentWeek, day30Info, customRoutine, lockedRoutines);
           const ws = monthData?.weekState;
           const dayState = ws?.[currentWeek]?.[dayName] || { routineDone: {}, editTasks: [] };
           return (

@@ -1,12 +1,13 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from './useAuth.jsx';
 import {
   uid, getTH, getCycleInfoForDate, getYearMonthKey,
-  buildDefaultWeekState, DEFAULT_NOTES, ALL_DAYS, WEEK_EXTRA,
-  getDay30Info, getRoutinesForDay, getDatesForWeek, getNumWeeksInMonth, dowToName,
+  buildDefaultWeekState, ALL_DAYS, WEEK_EXTRA,
+  getDay30Info, getDatesForWeek, getNumWeeksInMonth, dowToName,
 } from '../lib/constants';
-import { apiLoad, apiSave } from '../lib/api';
 
-// ── ensure all week/day slots exist ─────────────────────────────────────────
+// Ensure all week/day slots exist
 function ensureWeekState(ws) {
   const out = { ...ws };
   for (let w = 1; w <= 5; w++) {
@@ -28,375 +29,478 @@ function freshMonthData() {
   return { weekState: buildDefaultWeekState(), trackerState: {} };
 }
 
-// ── initial state factory ────────────────────────────────────────────────────
-function makeInitial() {
-  const today     = getTH();
-  const cycleInfo = getCycleInfoForDate(today);
-  return {
-    notes:          [...DEFAULT_NOTES],
-    customRoutine:  [],
-    monthlyArchive: [],
-    themeMode:      'light',
-    monthsData:     {},
-    // transient view state
-    viewYear:   cycleInfo.year,
-    viewMonth:  cycleInfo.month,
-    currentWeek: cycleInfo.week,
-  };
-}
+const DEFAULT_NOTES = [
+  { icon: '⏰', text: 'Daily team meeting every morning 09:00–09:15 — attend before starting any HR tasks' },
+  { icon: '↻', text: 'Import work time every 3 days: Monday, Thursday, Saturday — 09:15 after meeting (15 mins)' },
+  { icon: '🚗', text: 'Collect leave letters: Wednesday & Saturday 10:00–11:30 — travel to Resort, Boutique, Manee Inn (1.5 hrs)' },
+  { icon: '📋', text: 'Entry leave letters into HR program every afternoon 15:00–17:00 — NOT in the morning' },
+  { icon: '📢', text: 'Update & announce QT every Saturday at 16:30 before end of day' },
+  { icon: '📅', text: 'Work schedule for all 4 branches must be ready before day 25 (30 mins per branch = 2 hrs)' },
+  { icon: '⚠️', text: 'Arrive late report must be submitted before day 25' },
+  { icon: '🗂️', text: 'After day 25: clear resign letters & folders, check resigned employees returned uniforms' },
+  { icon: '🏨', text: 'Head office closed Sunday — Resort, Boutique, Manee Inn open 24/7' },
+  { icon: '🔄', text: 'This routine repeats every month — reset Tracker at start of each new month' },
+];
 
 export function useAppState() {
-  const [state, setState] = useState(makeInitial);
-  const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
-  const saveTimer  = useRef(null);
-  const saveDebounce = useRef(null);
+  const { user, profile, updateProfile } = useAuth();
+  const [state, setState] = useState({
+    notes: [],
+    customRoutine: [],
+    lockedRoutines: [],
+    monthlyArchive: [],
+    themeMode: 'light',
+    monthsData: {},
+    viewYear: new Date().getFullYear(),
+    viewMonth: new Date().getMonth(),
+    currentWeek: 1,
+  });
+  const [saveStatus, setSaveStatus] = useState('idle');
+  const [loading, setLoading] = useState(true);
+  const saveTimer = useRef(null);
+
+  // Theme sync from profile
+  useEffect(() => {
+    if (profile?.theme_mode) {
+      setState(prev => ({ ...prev, themeMode: profile.theme_mode }));
+    }
+  }, [profile]);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', state.themeMode === 'dark');
   }, [state.themeMode]);
 
-  const applyServerData = useCallback((data, keepCurrentView = false) => {
-    if (!data) return;
-    setState(prev => {
-      const today     = getTH();
-      const cycleInfo = getCycleInfoForDate(today);
-
-      let viewYear  = keepCurrentView ? prev.viewYear  : cycleInfo.year;
-      let viewMonth = keepCurrentView ? prev.viewMonth : cycleInfo.month;
-
-      if (!keepCurrentView && data.lastViewMonthKey) {
-        const [y, m] = data.lastViewMonthKey.split('-').map(Number);
-        if (!isNaN(y) && !isNaN(m)) { viewYear = y; viewMonth = m - 1; }
-      }
-
-      // normalise monthsData
-      const monthsData = data.monthsData || {};
-      if (!data.monthsData && (data.weekState || data.trackerState)) {
-        const legacyKey = getYearMonthKey(viewYear, viewMonth);
-        monthsData[legacyKey] = {
-          weekState:    ensureWeekState(data.weekState || buildDefaultWeekState()),
-          trackerState: data.trackerState || {},
-        };
-      }
-
-      // make sure current month slot exists
-      const curKey = getYearMonthKey(viewYear, viewMonth);
-      if (!monthsData[curKey]) monthsData[curKey] = freshMonthData();
-      monthsData[curKey].weekState = ensureWeekState(monthsData[curKey].weekState || {});
-
-      const cycleView = getCycleInfoForDate(today);
-      const currentWeek = keepCurrentView
-        ? prev.currentWeek
-        : (viewYear === cycleView.year && viewMonth === cycleView.month ? cycleView.week : 1);
-
-      return {
-        ...prev,
-        notes:          data.notes?.length ? data.notes : prev.notes,
-        customRoutine:  data.customRoutine  || [],
-        monthlyArchive: data.monthlyArchive || [],
-        themeMode:      data.themeMode      || prev.themeMode || 'light',
-        monthsData,
-        viewYear, viewMonth, currentWeek,
-      };
-    });
-  }, []);
-
-  // ── load on mount + listen to SSE updates ──────────────────────────────────
+  // Load all data from Supabase
   useEffect(() => {
-    apiLoad().then(data => applyServerData(data, false)).catch(err => console.warn('Load error', err));
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    const es = new EventSource('/api/events');
-    es.onmessage = (event) => {
+    async function loadData() {
+      setLoading(true);
       try {
-        const payload = JSON.parse(event.data);
-        if (payload.type === 'update' && payload.data) {
-          applyServerData(payload.data, true);
-        }
-      } catch (e) {}
-    };
-    return () => es.close();
-  }, [applyServerData]);
+        const today = getTH();
+        const cycleInfo = getCycleInfoForDate(today);
 
-  // ── helpers for current month data ────────────────────────────────────────
-  const getMonthKey = useCallback((st = null) => {
-    const s = st || state;
-    return getYearMonthKey(s.viewYear, s.viewMonth);
-  }, [state]);
+        // Parallel fetch
+        const [notesRes, customRes, lockedRes, archivesRes, monthRes] = await Promise.all([
+          supabase.from('notes').select('*').order('sort_order'),
+          supabase.from('custom_routines').select('*').order('sort_order'),
+          supabase.from('locked_routines').select('*').eq('is_active', true).order('sort_order'),
+          supabase.from('monthly_archives').select('*').order('closed_at', { ascending: false }),
+          supabase.from('months_data').select('*').eq('user_id', user.id),
+        ]);
 
-  const getMonthData = useCallback((st = null) => {
-    const s = st || state;
-    const key = getYearMonthKey(s.viewYear, s.viewMonth);
-    return s.monthsData[key] || freshMonthData();
-  }, [state]);
-
-  // ── auto-save (debounced 600 ms) ──────────────────────────────────────────
-  const scheduleSave = useCallback((nextState) => {
-    clearTimeout(saveDebounce.current);
-    saveDebounce.current = setTimeout(async () => {
-      setSaveStatus('saving');
-      try {
-        const key = getYearMonthKey(nextState.viewYear, nextState.viewMonth);
-        await apiSave({
-          notes:           nextState.notes,
-          customRoutine:   nextState.customRoutine,
-          monthlyArchive:  nextState.monthlyArchive,
-          themeMode:       nextState.themeMode,
-          monthsData:      nextState.monthsData,
-          lastViewMonthKey: key,
-          savedAt:         new Date().toISOString(),
+        // Build monthsData map
+        const monthsData = {};
+        (monthRes.data || []).forEach(m => {
+          const key = `${m.year}-${String(m.month).padStart(2, '0')}`;
+          monthsData[key] = {
+            weekState: ensureWeekState(m.week_state || {}),
+            trackerState: m.tracker_state || {}
+          };
         });
-        setSaveStatus('saved');
-        clearTimeout(saveTimer.current);
-        saveTimer.current = setTimeout(() => setSaveStatus('idle'), 2000);
-      } catch (e) {
-        console.error('Save error', e);
-        setSaveStatus('error');
-      }
-    }, 600);
-  }, []);
 
-  // ── generic updater ───────────────────────────────────────────────────────
-  const update = useCallback((updater, skipSave = false) => {
-    setState(prev => {
-      const next = typeof updater === 'function' ? updater(prev) : { ...prev, ...updater };
-      // ensure current month exists
-      const key = getYearMonthKey(next.viewYear, next.viewMonth);
-      if (!next.monthsData[key]) {
-        next.monthsData = { ...next.monthsData, [key]: freshMonthData() };
-      }
-      if (!skipSave) {
-        scheduleSave(next);
-      }
-      return next;
-    });
-  }, [scheduleSave]);
+        // Ensure current month exists
+        const curKey = getYearMonthKey(cycleInfo.year, cycleInfo.month);
+        if (!monthsData[curKey]) {
+          monthsData[curKey] = freshMonthData();
+        }
 
-  const toggleTheme = useCallback(() => {
-    update(prev => ({
-      ...prev,
-      themeMode: prev.themeMode === 'dark' ? 'light' : 'dark'
-    }));
-  }, [update]);
+        // If no notes, seed default notes
+        let notes = notesRes.data || [];
+        if (notes.length === 0) {
+          const insertPromises = DEFAULT_NOTES.map((n, i) =>
+            supabase.from('notes').insert({
+              user_id: user.id,
+              icon: n.icon,
+              text: n.text,
+              sort_order: i
+            })
+          );
+          await Promise.all(insertPromises);
+          const { data: newNotes } = await supabase.from('notes').select('*').order('sort_order');
+          notes = newNotes || [];
+        }
 
-  // ── navigate month ────────────────────────────────────────────────────────
+        setState(prev => ({
+          ...prev,
+          notes: notes.map(n => ({ id: n.id, icon: n.icon, text: n.text })),
+          customRoutine: (customRes.data || []).map(r => ({
+            id: r.id,
+            text: r.text,
+            time: r.time,
+            cls: r.cls,
+            week: r.week,
+            day: r.day
+          })),
+          lockedRoutines: (lockedRes.data || []).map(r => ({
+            id: r.id,
+            text: r.text,
+            time: r.time,
+            cls: r.cls,
+            week: r.week,
+            day: r.day
+          })),
+          monthlyArchive: (archivesRes.data || []).map(a => ({
+            id: a.id,
+            year: a.year,
+            month: a.month,
+            label: a.label,
+            total: a.total_tasks,
+            done: a.done_tasks,
+            skipped: a.skipped_tasks,
+            pct: a.percentage,
+            taskLog: a.task_log || [],
+            closedAt: a.closed_at
+          })),
+          monthsData,
+          viewYear: cycleInfo.year,
+          viewMonth: cycleInfo.month,
+          currentWeek: cycleInfo.week,
+          themeMode: profile?.theme_mode || 'light'
+        }));
+      } catch (err) {
+        console.error('Load error:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, [user, profile]);
+
+  // Save month data to Supabase
+  const saveMonthData = useCallback(async (year, month, weekState, trackerState) => {
+    if (!user) return;
+    setSaveStatus('saving');
+    try {
+      const { error } = await supabase
+        .from('months_data')
+        .upsert({
+          user_id: user.id,
+          year,
+          month,
+          week_state: weekState,
+          tracker_state: trackerState,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id,year,month' });
+
+      if (error) throw error;
+      setSaveStatus('saved');
+      clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => setSaveStatus('idle'), 2000);
+    } catch (e) {
+      console.error('Save error:', e);
+      setSaveStatus('error');
+    }
+  }, [user]);
+
+  // Toggle theme
+  const toggleTheme = useCallback(async () => {
+    const newMode = state.themeMode === 'dark' ? 'light' : 'dark';
+    setState(prev => ({ ...prev, themeMode: newMode }));
+    document.documentElement.classList.toggle('dark', newMode === 'dark');
+    if (user) {
+      await updateProfile({ theme_mode: newMode });
+    }
+  }, [state.themeMode, user, updateProfile]);
+
+  // Navigate month
   const navMonth = useCallback((dir) => {
-    update(prev => {
+    setState(prev => {
       let m = prev.viewMonth + dir;
       let y = prev.viewYear;
-      if (m < 0)  { m = 11; y--; }
-      if (m > 11) { m = 0;  y++; }
-
-      if (y !== prev.viewYear) {
-        apiLoad(y).then(data => applyServerData(data, true)).catch(()=>{});
-      }
+      if (m < 0) { m = 11; y--; }
+      if (m > 11) { m = 0; y++; }
 
       const key = getYearMonthKey(y, m);
       const monthsData = { ...prev.monthsData };
       if (!monthsData[key]) monthsData[key] = freshMonthData();
       monthsData[key] = { ...monthsData[key], weekState: ensureWeekState(monthsData[key].weekState || {}) };
 
-      const today     = getTH();
+      const today = getTH();
       const cycleInfo = getCycleInfoForDate(today);
       const currentWeek = (y === cycleInfo.year && m === cycleInfo.month) ? cycleInfo.week : 1;
 
       return { ...prev, viewYear: y, viewMonth: m, monthsData, currentWeek };
-    }, true);
-  }, [update, applyServerData]);
+    });
+  }, []);
 
   const goToToday = useCallback(() => {
-    const today     = getTH();
+    const today = getTH();
     const cycleInfo = getCycleInfoForDate(today);
-    update(prev => {
-      if (cycleInfo.year !== prev.viewYear) {
-        apiLoad(cycleInfo.year).then(data => applyServerData(data, true)).catch(()=>{});
-      }
-      return {
-        ...prev,
-        viewYear:    cycleInfo.year,
-        viewMonth:   cycleInfo.month,
-        currentWeek: cycleInfo.week,
-      };
-    }, true);
-  }, [update, applyServerData]);
+    setState(prev => ({
+      ...prev,
+      viewYear: cycleInfo.year,
+      viewMonth: cycleInfo.month,
+      currentWeek: cycleInfo.week,
+    }));
+  }, []);
 
-  // ── routine toggle ────────────────────────────────────────────────────────
+  // Generic update (for week changes, etc.)
+  const update = useCallback((updater, skipSave = false) => {
+    setState(prev => {
+      const updates = typeof updater === 'function' ? updater(prev) : updater;
+      return { ...prev, ...updates };
+    });
+  }, []);
+
+  // Toggle routine
   const toggleRoutine = useCallback((week, day, routineIdx) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ws  = ensureWeekState({ ...md.weekState });
+      const md = prev.monthsData[key] || freshMonthData();
+      const ws = ensureWeekState({ ...md.weekState });
       const dayState = { ...ws[week][day], routineDone: { ...ws[week][day].routineDone } };
       dayState.routineDone[routineIdx] = !dayState.routineDone[routineIdx];
       ws[week] = { ...ws[week], [day]: dayState };
-      return {
+
+      const newState = {
         ...prev,
         monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } },
       };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, ws, md.trackerState);
+      return newState;
     });
-  }, [update]);
+  }, [saveMonthData]);
 
-  // ── edit task toggle ──────────────────────────────────────────────────────
+  // Edit tasks
   const toggleEditTask = useCallback((week, day, taskId) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ws  = ensureWeekState({ ...md.weekState });
+      const md = prev.monthsData[key] || freshMonthData();
+      const ws = ensureWeekState({ ...md.weekState });
       const dayState = { ...ws[week][day] };
       dayState.editTasks = dayState.editTasks.map(t =>
         t.id === taskId ? { ...t, done: !t.done } : t
       );
       ws[week] = { ...ws[week], [day]: dayState };
-      return { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
-    });
-  }, [update]);
 
-  // ── add edit task ─────────────────────────────────────────────────────────
+      const newState = { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, ws, md.trackerState);
+      return newState;
+    });
+  }, [saveMonthData]);
+
   const addEditTask = useCallback((week, day, text, time) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ws  = ensureWeekState({ ...md.weekState });
+      const md = prev.monthsData[key] || freshMonthData();
+      const ws = ensureWeekState({ ...md.weekState });
       const dayState = { ...ws[week][day] };
       dayState.editTasks = [...dayState.editTasks, { id: uid(), text, time, done: false }];
       ws[week] = { ...ws[week], [day]: dayState };
-      return { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
-    });
-  }, [update]);
 
-  // ── delete edit task ──────────────────────────────────────────────────────
+      const newState = { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, ws, md.trackerState);
+      return newState;
+    });
+  }, [saveMonthData]);
+
   const deleteEditTask = useCallback((week, day, taskId) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ws  = ensureWeekState({ ...md.weekState });
+      const md = prev.monthsData[key] || freshMonthData();
+      const ws = ensureWeekState({ ...md.weekState });
       const dayState = { ...ws[week][day] };
       dayState.editTasks = dayState.editTasks.filter(t => t.id !== taskId);
       ws[week] = { ...ws[week], [day]: dayState };
-      return { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
-    });
-  }, [update]);
 
-  // ── update edit task ──────────────────────────────────────────────────────
+      const newState = { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, ws, md.trackerState);
+      return newState;
+    });
+  }, [saveMonthData]);
+
   const updateEditTask = useCallback((week, day, taskId, text, time) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ws  = ensureWeekState({ ...md.weekState });
+      const md = prev.monthsData[key] || freshMonthData();
+      const ws = ensureWeekState({ ...md.weekState });
       const dayState = { ...ws[week][day] };
       dayState.editTasks = dayState.editTasks.map(t =>
         t.id === taskId ? { ...t, text, time } : t
       );
       ws[week] = { ...ws[week], [day]: dayState };
-      return { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
-    });
-  }, [update]);
 
-  // ── tracker status ────────────────────────────────────────────────────────
+      const newState = { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, weekState: ws } } };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, ws, md.trackerState);
+      return newState;
+    });
+  }, [saveMonthData]);
+
+  // Tracker status
   const setTrackerStatus = useCallback((id, status) => {
-    update(prev => {
+    setState(prev => {
       const key = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md  = prev.monthsData[key] || freshMonthData();
-      const ts  = { ...md.trackerState, [id]: status };
-      return { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, trackerState: ts } } };
+      const md = prev.monthsData[key] || freshMonthData();
+      const ts = { ...md.trackerState, [id]: status };
+
+      const newState = { ...prev, monthsData: { ...prev.monthsData, [key]: { ...md, trackerState: ts } } };
+      saveMonthData(prev.viewYear, prev.viewMonth + 1, md.weekState, ts);
+      return newState;
     });
-  }, [update]);
+  }, [saveMonthData]);
 
-  // ── notes ─────────────────────────────────────────────────────────────────
-  const addNote = useCallback((icon, text) => {
-    update(prev => ({ ...prev, notes: [...prev.notes, { id: uid(), icon, text }] }));
-  }, [update]);
-  const deleteNote = useCallback((id) => {
-    update(prev => ({ ...prev, notes: prev.notes.filter(n => n.id !== id) }));
-  }, [update]);
-  const updateNote = useCallback((id, text) => {
-    update(prev => ({ ...prev, notes: prev.notes.map(n => n.id === id ? { ...n, text } : n) }));
-  }, [update]);
+  // Notes
+  const addNote = useCallback(async (icon, text) => {
+    const { data, error } = await supabase
+      .from('notes')
+      .insert({ user_id: user.id, icon, text })
+      .select()
+      .maybeSingle();
 
-  // ── custom routines ───────────────────────────────────────────────────────
-  const addCustomRoutine = useCallback((routine) => {
-    update(prev => ({ ...prev, customRoutine: [...prev.customRoutine, { ...routine, id: uid() }] }));
-  }, [update]);
-  const deleteCustomRoutine = useCallback((id) => {
-    update(prev => ({ ...prev, customRoutine: prev.customRoutine.filter(r => r.id !== id) }));
-  }, [update]);
-  const updateCustomRoutine = useCallback((id, data) => {
-    update(prev => ({ ...prev, customRoutine: prev.customRoutine.map(r => r.id === id ? { ...r, ...data } : r) }));
-  }, [update]);
+    if (!error && data) {
+      setState(prev => ({ ...prev, notes: [...prev.notes, { id: data.id, icon, text }] }));
+    }
+  }, [user]);
 
-  // ── archive ───────────────────────────────────────────────────────────────
-  const archiveMonth = useCallback(() => {
-    update(prev => {
-      const today = getTH();
-      const key   = getYearMonthKey(prev.viewYear, prev.viewMonth);
-      const md    = prev.monthsData[key] || freshMonthData();
-      const ws    = md.weekState;
-      const ts    = md.trackerState;
-      const d30   = getDay30Info(prev.viewYear, prev.viewMonth);
-      const numWeeks = getNumWeeksInMonth(prev.viewYear, prev.viewMonth);
+  const deleteNote = useCallback(async (id) => {
+    await supabase.from('notes').delete().eq('id', id);
+    setState(prev => ({ ...prev, notes: prev.notes.filter(n => n.id !== id) }));
+  }, []);
 
-      let total = 0, done = 0, skipped = 0;
-      const taskLog = [];
+  const updateNote = useCallback(async (id, text) => {
+    await supabase.from('notes').update({ text }).eq('id', id);
+    setState(prev => ({ ...prev, notes: prev.notes.map(n => n.id === id ? { ...n, text } : n) }));
+  }, []);
 
-      for (let w = 1; w <= numWeeks; w++) {
-        const dates = getDatesForWeek(prev.viewYear, prev.viewMonth, w);
-        dates.forEach(date => {
-          const dayName = dowToName(date.getDay());
-          if (dayName === 'Sunday') return;
-          const routine = getRoutinesForDay(dayName, w, d30, prev.customRoutine);
-          const dayState = ws[w]?.[dayName] || { routineDone: {}, editTasks: [] };
+  // Custom routines
+  const addCustomRoutine = useCallback(async (routine) => {
+    const { data, error } = await supabase
+      .from('custom_routines')
+      .insert({ user_id: user.id, ...routine })
+      .select()
+      .maybeSingle();
 
-          routine.forEach((r, i) => {
-            const isDone = !!dayState.routineDone[i];
-            total++;
-            if (isDone) done++;
-            taskLog.push({ week: w, day: dayName, text: r.text, time: r.time, status: isDone ? 'done' : 'pending' });
-          });
-          dayState.editTasks.forEach(t => {
-            total++;
-            if (t.done) done++;
-            taskLog.push({ week: w, day: dayName, text: t.text, time: t.time, status: t.done ? 'done' : 'pending' });
-          });
-        });
-      }
+    if (!error && data) {
+      setState(prev => ({ ...prev, customRoutine: [...prev.customRoutine, { id: data.id, ...routine }] }));
+    }
+  }, [user]);
 
-      const pct = total ? Math.round(done / total * 100) : 0;
-      const arc = {
-        year: prev.viewYear, month: prev.viewMonth,
-        label: `${['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'][prev.viewMonth]} ${prev.viewYear}`,
-        total, done, skipped, pct, taskLog,
-        closedAt: today.toISOString(),
-      };
+  const deleteCustomRoutine = useCallback(async (id) => {
+    await supabase.from('custom_routines').delete().eq('id', id);
+    setState(prev => ({ ...prev, customRoutine: prev.customRoutine.filter(r => r.id !== id) }));
+  }, []);
 
-      const existing = prev.monthlyArchive.filter(a => !(a.year === prev.viewYear && a.month === prev.viewMonth));
-
-      // Reset the month
-      const fresh = freshMonthData();
-      const newMonthsData = { ...prev.monthsData, [key]: fresh };
-
-      return {
-        ...prev,
-        monthlyArchive: [...existing, arc],
-        monthsData: newMonthsData,
-      };
-    });
-  }, [update]);
-
-  const deleteArchive = useCallback((year, month) => {
-    update(prev => ({
+  const updateCustomRoutine = useCallback(async (id, data) => {
+    await supabase.from('custom_routines').update(data).eq('id', id);
+    setState(prev => ({
       ...prev,
-      monthlyArchive: prev.monthlyArchive.filter(a => !(a.year === year && a.month === month)),
+      customRoutine: prev.customRoutine.map(r => r.id === id ? { ...r, ...data } : r)
     }));
-  }, [update]);
+  }, []);
 
-  // ── stats helpers ─────────────────────────────────────────────────────────
+  // Archive month
+  const archiveMonth = useCallback(async () => {
+    const today = getTH();
+    const key = getYearMonthKey(state.viewYear, state.viewMonth);
+    const md = state.monthsData[key] || freshMonthData();
+    const ws = md.weekState;
+    const ts = md.trackerState;
+    const d30 = getDay30Info(state.viewYear, state.viewMonth);
+    const numWeeks = getNumWeeksInMonth(state.viewYear, state.viewMonth);
+
+    let total = 0, done = 0, skipped = 0;
+    const taskLog = [];
+
+    const allRoutines = [...state.lockedRoutines, ...state.customRoutine];
+
+    for (let w = 1; w <= numWeeks; w++) {
+      const dates = getDatesForWeek(state.viewYear, state.viewMonth, w);
+      dates.forEach(date => {
+        const dayName = dowToName(date.getDay());
+        if (dayName === 'Sunday') return;
+
+        const routine = allRoutines.filter(r => {
+          if (r.week === 'day30') {
+            return d30.week === w && dayName === d30.dayName;
+          }
+          const weekOk = r.week === 'all' || r.week === String(w);
+          const dayOk = r.day === 'all' || r.day.split(',').map(s => s.trim()).includes(dayName);
+          return weekOk && dayOk;
+        });
+
+        const dayState = ws[w]?.[dayName] || { routineDone: {}, editTasks: [] };
+
+        routine.forEach((r, i) => {
+          const isDone = !!dayState.routineDone[i];
+          total++;
+          if (isDone) done++;
+          taskLog.push({ week: w, day: dayName, text: r.text, time: r.time, status: isDone ? 'done' : 'pending' });
+        });
+        dayState.editTasks.forEach(t => {
+          total++;
+          if (t.done) done++;
+          taskLog.push({ week: w, day: dayName, text: t.text, time: t.time, status: t.done ? 'done' : 'pending' });
+        });
+      });
+    }
+
+    const pct = total ? Math.round(done / total * 100) : 0;
+
+    const { data: archive, error } = await supabase
+      .from('monthly_archives')
+      .insert({
+        user_id: user.id,
+        year: state.viewYear,
+        month: state.viewMonth + 1,
+        label: `${['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'][state.viewMonth]} ${state.viewYear}`,
+        total_tasks: total,
+        done_tasks: done,
+        skipped_tasks: skipped,
+        percentage: pct,
+        task_log: taskLog
+      })
+      .select()
+      .maybeSingle();
+
+    if (!error && archive) {
+      // Reset month
+      const fresh = freshMonthData();
+      await supabase.from('months_data').upsert({
+        user_id: user.id,
+        year: state.viewYear,
+        month: state.viewMonth + 1,
+        week_state: fresh.weekState,
+        tracker_state: fresh.trackerState
+      }, { onConflict: 'user_id,year,month' });
+
+      setState(prev => ({
+        ...prev,
+        monthlyArchive: [...prev.monthlyArchive, {
+          id: archive.id,
+          year: state.viewYear,
+          month: state.viewMonth + 1,
+          label: archive.label,
+          total, done, skipped, pct,
+          taskLog,
+          closedAt: today.toISOString()
+        }],
+        monthsData: { ...prev.monthsData, [key]: fresh }
+      }));
+    }
+  }, [state, user]);
+
+  const deleteArchive = useCallback(async (year, month) => {
+    await supabase.from('monthly_archives').delete().eq('user_id', user.id).eq('year', year).eq('month', month);
+    setState(prev => ({
+      ...prev,
+      monthlyArchive: prev.monthlyArchive.filter(a => !(a.year === year && a.month === month))
+    }));
+  }, [user]);
+
+  // Stats helpers
   const getDayStats = useCallback((week, day, routines, forYear, forMonth) => {
     if (day === 'Sunday') return { total: 0, done: 0 };
     const key = getYearMonthKey(forYear ?? state.viewYear, forMonth ?? state.viewMonth);
-    const ws  = state.monthsData[key]?.weekState;
-    const s   = ws?.[week]?.[day];
+    const ws = state.monthsData[key]?.weekState;
+    const s = ws?.[week]?.[day];
     if (!s) return { total: 0, done: 0 };
     const total = routines.length + s.editTasks.length;
-    const done  = routines.filter((_, i) => s.routineDone[i]).length + s.editTasks.filter(t => t.done).length;
+    const done = routines.filter((_, i) => s.routineDone[i]).length + s.editTasks.filter(t => t.done).length;
     return { total, done };
   }, [state]);
 
@@ -404,22 +508,35 @@ export function useAppState() {
     const d30 = getDay30Info(state.viewYear, state.viewMonth);
     const numWeeks = getNumWeeksInMonth(state.viewYear, state.viewMonth);
     let total = 0, done = 0;
+    const allRoutines = [...state.lockedRoutines, ...state.customRoutine];
+
     for (let w = 1; w <= numWeeks; w++) {
       const dates = getDatesForWeek(state.viewYear, state.viewMonth, w);
       dates.forEach(date => {
         const dayName = dowToName(date.getDay());
         if (dayName === 'Sunday') return;
-        const routines = getRoutinesForDay(dayName, w, d30, state.customRoutine);
-        const st = getDayStats(w, dayName, routines);
-        total += st.total;
-        done  += st.done;
+
+        const routine = allRoutines.filter(r => {
+          if (r.week === 'day30') {
+            return d30.week === w && dayName === d30.dayName;
+          }
+          const weekOk = r.week === 'all' || r.week === String(w);
+          const dayOk = r.day === 'all' || r.day.split(',').map(s => s.trim()).includes(dayName);
+          return weekOk && dayOk;
+        });
+
+        const s = state.monthsData[getYearMonthKey(state.viewYear, state.viewMonth)]?.weekState?.[w]?.[dayName];
+        if (s) {
+          total += routine.length + s.editTasks.length;
+          done += routine.filter((_, i) => s.routineDone[i]).length + s.editTasks.filter(t => t.done).length;
+        }
       });
     }
     return { total, done };
-  }, [state, getDayStats]);
+  }, [state]);
 
   return {
-    state, saveStatus, update, toggleTheme,
+    state, saveStatus, loading, update, toggleTheme,
     navMonth, goToToday,
     getMonthData,
     toggleRoutine, toggleEditTask, addEditTask, deleteEditTask, updateEditTask,

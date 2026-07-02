@@ -4,7 +4,7 @@ import {
   getRoutinesForDay, dowToName, WEEK_EXTRA, uid,
 } from '../lib/constants';
 
-function buildEntries(viewYear, viewMonth, monthData, customRoutine) {
+function buildEntries(viewYear, viewMonth, monthData, customRoutine, lockedRoutines) {
   const entries = [];
   const d30 = getDay30Info(viewYear, viewMonth);
   const numWeeks = getNumWeeksInMonth(viewYear, viewMonth);
@@ -16,7 +16,7 @@ function buildEntries(viewYear, viewMonth, monthData, customRoutine) {
       const dayName = dowToName(date.getDay());
       if (dayName === 'Sunday') return;
 
-      getRoutinesForDay(dayName, w, d30, customRoutine).forEach((t, i) => {
+      getRoutinesForDay(dayName, w, d30, customRoutine, lockedRoutines).forEach((t, i) => {
         const id = `r_${w}_${dayName}_${i}`;
         entries.push({ id, week: w, day: dayName, time: t.time, text: t.text, status: ts[id] || 'pending' });
       });
@@ -32,12 +32,12 @@ function buildEntries(viewYear, viewMonth, monthData, customRoutine) {
 }
 
 export default function TrackerView({ state, monthData, onSetTrackerStatus, toast }) {
-  const { viewYear, viewMonth, customRoutine } = state;
+  const { viewYear, viewMonth, customRoutine, lockedRoutines } = state;
   const [filter, setFilter] = useState('all'); // all | pending | done | skip
 
   const entries = useMemo(
-    () => buildEntries(viewYear, viewMonth, monthData, customRoutine),
-    [viewYear, viewMonth, monthData, customRoutine]
+    () => buildEntries(viewYear, viewMonth, monthData, customRoutine, lockedRoutines),
+    [viewYear, viewMonth, monthData, customRoutine, lockedRoutines]
   );
 
   const visible = filter === 'all' ? entries : entries.filter(e => {

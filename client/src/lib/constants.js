@@ -38,32 +38,8 @@ export const WEEK_EXTRA = {
   5:{},
 };
 
-// ── locked routines ──────────────────────────────────────────────────────────
-export const LOCKED_ROUTINES = [
-  { id:'lr_1',  text:'Daily team meeting',                                            time:'09:00–09:15', cls:'tp-mtg',  week:'all',   day:'all' },
-  { id:'lr_2',  text:'Import work time into HR program',                              time:'09:15–09:30', cls:'tp-imp',  week:'all',   day:'Monday,Thursday,Saturday' },
-  { id:'lr_3',  text:'Collect leave letters: Resort, Boutique & Manee Inn (1.5 hrs travel)', time:'10:00–11:30', cls:'tp-am',   week:'all',   day:'Wednesday,Saturday' },
-  { id:'lr_4',  text:'Create work schedule for all 4 branches (due before day 25)',   time:'10:00–12:00', cls:'tp-dead', week:'3',     day:'Monday' },
-  { id:'lr_5',  text:'Check employee time arrive & leave records (due before day 25)',time:'10:00–11:30', cls:'tp-dead', week:'3',     day:'Wednesday' },
-  { id:'lr_6',  text:'Create arrive late report (due before day 25)',                 time:'13:00–14:00', cls:'tp-dead', week:'3',     day:'Friday' },
-  { id:'lr_7',  text:'Entry leave letters into HR program',                           time:'15:00–17:00', cls:'tp-pm',   week:'all',   day:'all' },
-  { id:'lr_8',  text:'Update and announce QT before end of day',                     time:'16:30–17:00', cls:'tp-pm',   week:'all',   day:'Saturday' },
-  { id:'lr_9',  text:'Clear employee resign letters & resign folders',                time:'10:00–11:00', cls:'tp-dead', week:'day30', day:'all' },
-  { id:'lr_10', text:'Check resigned employees returned uniforms',                    time:'11:00–11:30', cls:'tp-dead', week:'day30', day:'all' },
-];
-
-export const DEFAULT_NOTES = [
-  { id:uid(), icon:'⏰', text:'Daily team meeting every morning 09:00–09:15 — attend before starting any HR tasks' },
-  { id:uid(), icon:'↻',  text:'Import work time every 3 days: Monday, Thursday, Saturday — 09:15 after meeting (15 mins)' },
-  { id:uid(), icon:'🚗', text:'Collect leave letters: Wednesday & Saturday 10:00–11:30 — travel to Resort, Boutique, Manee Inn (1.5 hrs)' },
-  { id:uid(), icon:'📋', text:'Entry leave letters into HR program every afternoon 15:00–17:00 — NOT in the morning' },
-  { id:uid(), icon:'📢', text:'Update & announce QT every Saturday at 16:30 before end of day' },
-  { id:uid(), icon:'📅', text:'Work schedule for all 4 branches must be ready before day 25 (30 mins per branch = 2 hrs)' },
-  { id:uid(), icon:'⚠️', text:'Arrive late report must be submitted before day 25' },
-  { id:uid(), icon:'🗂️', text:'After day 25: clear resign letters & folders, check resigned employees returned uniforms' },
-  { id:uid(), icon:'🏨', text:'Head office closed Sunday — Resort, Boutique, Manee Inn open 24/7' },
-  { id:uid(), icon:'🔄', text:'This routine repeats every month — reset Tracker at start of each new month' },
-];
+// Default notes are now seeded in the database for new users
+// See useAppState.js for the DEFAULT_NOTES array
 
 // ── date helpers ─────────────────────────────────────────────────────────────
 export function getTH() {
@@ -151,8 +127,8 @@ export function routineMatchesDay(r, day, week, day30Info) {
   return weekOk && dayOk;
 }
 
-export function getRoutinesForDay(day, week, day30Info, customRoutine = []) {
-  const all = [...LOCKED_ROUTINES, ...customRoutine];
+export function getRoutinesForDay(day, week, day30Info, customRoutine = [], lockedRoutines = []) {
+  const all = [...lockedRoutines, ...customRoutine];
   return all.filter(r => routineMatchesDay(r, day, week, day30Info));
 }
 

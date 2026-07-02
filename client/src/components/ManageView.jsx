@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LOCKED_ROUTINES, ALL_DAYS } from '../lib/constants';
+import { ALL_DAYS } from '../lib/constants';
 
 const WEEKS  = ['all','1','2','3','4','5','day30'];
 const CLS    = ['tp-mtg','tp-imp','tp-am','tp-pm','tp-gen','tp-dead'];
@@ -26,7 +26,7 @@ function RoutineRow({ r, onDelete, onEdit }) {
 
 const EMPTY = { text:'', time:'', week:'all', day:'all', cls:'tp-gen' };
 
-export default function ManageView({ customRoutine, onAdd, onDelete, onUpdate, toast }) {
+export default function ManageView({ customRoutine, lockedRoutines = [], onAdd, onDelete, onUpdate, toast }) {
   const [dayFilter, setDayFilter] = useState('All');
   const [showForm, setShowForm]   = useState(false);
   const [form, setForm]           = useState(EMPTY);
@@ -50,8 +50,8 @@ export default function ManageView({ customRoutine, onAdd, onDelete, onUpdate, t
     setEditId(r.id); setShowForm(true);
   }
 
-  const filteredLocked = dayFilter === 'All' ? LOCKED_ROUTINES
-    : LOCKED_ROUTINES.filter(r => r.day === 'all' || r.day.split(',').map(s => s.trim()).includes(dayFilter) || dayFilter === 'day30' && r.week === 'day30');
+  const filteredLocked = dayFilter === 'All' ? lockedRoutines
+    : lockedRoutines.filter(r => r.day === 'all' || r.day.split(',').map(s => s.trim()).includes(dayFilter) || dayFilter === 'day30' && r.week === 'day30');
 
   const filteredCustom = dayFilter === 'All' ? customRoutine
     : customRoutine.filter(r => r.day === 'all' || r.day.split(',').map(s => s.trim()).includes(dayFilter));

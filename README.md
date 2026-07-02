@@ -1,60 +1,73 @@
-# HR Task Planner — Portable USB Edition
+# HR Task Planner — Online Edition
 
-## Quick Start
+A multi-user HR task management application with Supabase backend.
 
-1. Double-click **Start_Planner.bat**
-2. Your browser will open automatically to http://localhost:3000
-3. Use the app as normal — data saves **automatically** to `data.json` on this USB drive
-4. To stop: press any key in the black terminal window, or just close it
+## Features
+
+- **Multi-user support** — Each user has their own data, notes, and task history
+- **Authentication** — Sign up / Sign in with email and password
+- **Admin panel** — Manage locked routines and user roles
+- **Real-time sync** — Data automatically saves to the cloud
+- **Dark mode** — Toggle between light and dark themes
+- **Task tracking** — Weekly view, calendar view, and tracker view
+
+## Tech Stack
+
+- **Frontend:** React + Vite + Tailwind CSS
+- **Backend:** Supabase (PostgreSQL + Auth)
+- **Hosting:** Vercel / Netlify / any static hosting
+
+## Development Setup
+
+1. **Install dependencies:**
+   ```bash
+   cd client
+   npm install
+   ```
+
+2. **Set up environment variables:**
+   Create a `.env` file in the `client/` directory:
+   ```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+   The built files will be in `client/dist/`
+
+## Database Schema
+
+The app uses the following Supabase tables:
+
+- `profiles` — User profiles (linked to auth.users), stores display name, role, theme
+- `locked_routines` — System-wide locked routines (admin managed)
+- `custom_routines` — User-specific custom routines
+- `months_data` — User's month data (week state, tracker state)
+- `notes` — User notes and reminders
+- `monthly_archives` — Archived month snapshots
+
+## User Roles
+
+- **User** — Can manage their own tasks, notes, custom routines
+- **Admin** — Can additionally manage locked routines and user roles
+
+## Migration from USB Edition
+
+If migrating from the old USB edition:
+
+1. Export your `data.json` file
+2. Create accounts in the new system
+3. Use the Admin panel to recreate locked routines
+4. Manually transfer notes and tasks
 
 ---
 
-## USB Folder Structure
-
-```
-📁 HR_Planner\
-  ├── ⚙️ node.exe             — Standalone Node.js (no install needed)
-  ├── 🚀 Start_Planner.bat    — Double-click to launch
-  ├── 💾 data.json            — Your saved data (auto-created)
-  ├── 📁 server\
-  │   └── server.js           — Tiny local web server
-  └── 📁 client\
-      └── dist\               — Built React app (served by server.js)
-```
-
----
-
-## Getting node.exe
-
-**You don't need to do anything manually anymore.** The first time `Start_Planner.bat` runs and doesn't find `node.exe` next to it, it will automatically download the official Node.js binary and set itself up. This needs an internet connection just for that first run.
-
-If the auto-download fails (no internet, or the office network blocks it), the script will show manual instructions:
-
-1. Go to: https://nodejs.org/en/download/
-2. Choose **Windows Binary (.zip)** (not the installer)
-3. Extract → copy **node.exe** into this folder next to Start_Planner.bat
-4. Run Start_Planner.bat again
-
-Either way, once `node.exe` is in the folder, every future launch is instant and needs zero internet.
-
----
-
-## Troubleshooting
-
-**Windows SmartScreen warning:** Click "More info" → "Run anyway"
-
-**Firewall popup:** Click "Cancel" or "No" — localhost still works without public network access
-
-**Corporate USB policy:** Ask IT if .bat and .exe files can run from USB. If blocked, you can run `node.exe server\server.js` from Command Prompt manually, then open http://localhost:3000 in your browser.
-
-**Port 3000 already in use:** Edit `server\server.js` line 5 and change `3000` to another port (e.g. `3001`), then edit `Start_Planner.bat` to match.
-
----
-
-## Data Backup
-
-Your data lives in `data.json`. To back it up, just copy that file somewhere safe. To restore, paste it back.
-
----
-
-Built with React + Vite + Tailwind CSS + Node.js (zero external npm dependencies at runtime)
+Built with React + Vite + Tailwind CSS + Supabase
