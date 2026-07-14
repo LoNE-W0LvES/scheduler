@@ -1,0 +1,198 @@
+{
+  "version": "1.1",
+  "name": "Schaduler Backup Template",
+  "exportedAt": "2026-07-03T00:00:00.000Z",
+  "themeMode": "light",
+  "weekSettings": {
+    "1": {
+      "t": "Week 1 — Kickoff & Planning",
+      "sub": "Review pending items, branch visits, daily routine setup"
+    },
+    "2": {
+      "t": "Week 2 — People Focus",
+      "sub": "Branch visits, onboarding coordination, daily admin tasks"
+    },
+    "3": {
+      "t": "Week 3 — Admin & Deadlines",
+      "sub": "Work schedules, attendance check, arrive late report (due before day 25)"
+    },
+    "4": {
+      "t": "Week 4 — Month Close",
+      "sub": "Clear resign folders, check uniforms, archive documents, prepare next month"
+    }
+  },
+  "customRoutines": [
+    {
+      "text": "Daily team meeting every morning — attend before starting any HR tasks",
+      "time": "09:00–09:15",
+      "cls": "tp-mtg",
+      "week": "all",
+      "day": "all",
+      "flags": {
+        "isLocked": false,
+        "isDaily": true,
+        "isAllWeeks": true,
+        "daysOfWeekFlag": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "weekCycleFlag": "all",
+        "tagColorFlag": "tp-mtg"
+      }
+    },
+    {
+      "text": "Import work time every 3 days — after meeting",
+      "time": "09:15–09:30",
+      "cls": "tp-imp",
+      "week": "all",
+      "day": "Monday, Thursday, Saturday",
+      "flags": {
+        "isLocked": false,
+        "isDaily": false,
+        "isAllWeeks": true,
+        "daysOfWeekFlag": ["Monday", "Thursday", "Saturday"],
+        "weekCycleFlag": "all",
+        "tagColorFlag": "tp-imp"
+      }
+    },
+    {
+      "text": "Collect leave letters — travel to Resort, Boutique, Manee Inn",
+      "time": "10:00–11:30",
+      "cls": "tp-imp",
+      "week": "all",
+      "day": "Wednesday, Saturday",
+      "flags": {
+        "isLocked": false,
+        "isDaily": false,
+        "isAllWeeks": true,
+        "daysOfWeekFlag": ["Wednesday", "Saturday"],
+        "weekCycleFlag": "all",
+        "tagColorFlag": "tp-imp"
+      }
+    },
+    {
+      "text": "Entry leave letters into HR program — afternoon only",
+      "time": "15:00–17:00",
+      "cls": "tp-pm",
+      "week": "all",
+      "day": "all",
+      "flags": {
+        "isLocked": false,
+        "isDaily": true,
+        "isAllWeeks": true,
+        "daysOfWeekFlag": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "weekCycleFlag": "all",
+        "tagColorFlag": "tp-pm"
+      }
+    },
+    {
+      "text": "Update & announce QT before end of day",
+      "time": "16:30–17:00",
+      "cls": "tp-dead",
+      "week": "all",
+      "day": "Saturday",
+      "flags": {
+        "isLocked": false,
+        "isDaily": false,
+        "isAllWeeks": true,
+        "daysOfWeekFlag": ["Saturday"],
+        "weekCycleFlag": "all",
+        "tagColorFlag": "tp-dead"
+      }
+    },
+    {
+      "text": "Work schedule for all 4 branches ready before day 25",
+      "time": "10:00–12:00",
+      "cls": "tp-dead",
+      "week": "3",
+      "day": "all",
+      "flags": {
+        "isLocked": false,
+        "isDaily": true,
+        "isAllWeeks": false,
+        "daysOfWeekFlag": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "weekCycleFlag": "3",
+        "tagColorFlag": "tp-dead"
+      }
+    },
+    {
+      "text": "Submit Arrive Late report before day 25",
+      "time": "13:00–14:00",
+      "cls": "tp-dead",
+      "week": "3",
+      "day": "all",
+      "flags": {
+        "isLocked": false,
+        "isDaily": true,
+        "isAllWeeks": false,
+        "daysOfWeekFlag": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "weekCycleFlag": "3",
+        "tagColorFlag": "tp-dead"
+      }
+    },
+    {
+      "text": "After day 25: clear resign letters & folders, check returned uniforms",
+      "time": "14:00–16:00",
+      "cls": "tp-gen",
+      "week": "4",
+      "day": "all",
+      "flags": {
+        "isLocked": false,
+        "isDaily": true,
+        "isAllWeeks": false,
+        "daysOfWeekFlag": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "weekCycleFlag": "4",
+        "tagColorFlag": "tp-gen"
+      }
+    }
+  ],
+  "notes": [
+    {
+      "icon": "⏰",
+      "text": "Daily team meeting every morning 09:00–09:15 — attend before starting any HR tasks",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "↻",
+      "text": "Import work time every 3 days: Monday, Thursday, Saturday — 09:15 after meeting (15 mins)",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "🚗",
+      "text": "Collect leave letters: Wednesday & Saturday 10:00–11:30 — travel to Resort, Boutique, Manee Inn (1.5 hrs)",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "📋",
+      "text": "Entry leave letters into HR program every afternoon 15:00–17:00 — NOT in the morning",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "📢",
+      "text": "Update & announce QT every Saturday at 16:30 before end of day",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "📅",
+      "text": "Work schedule for all 4 branches must be ready before day 25 (30 mins per branch = 2 hrs)",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "⚠️",
+      "text": "Arrive late report must be submitted before day 25",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "🗂️",
+      "text": "After day 25: clear resign letters & folders, check resigned employees returned uniforms",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "🏨",
+      "text": "Head office closed Sunday — Resort, Boutique, Manee Inn open 24/7",
+      "flags": { "isDefault": true }
+    },
+    {
+      "icon": "🔄",
+      "text": "This routine repeats every month — reset Tracker at start of each new month",
+      "flags": { "isDefault": true }
+    }
+  ]
+}

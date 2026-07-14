@@ -1,0 +1,33 @@
+{
+  "backup_date": "2026-07-02T20:00:00Z",
+  "tables": {
+    "profiles": [
+      {
+        "id": "3a92c741-4d70-4edf-9c40-5585946f4333",
+        "email": "nafithelonewolves@gmail.com",
+        "display_name": "LoNE WoLvES",
+        "role": "admin",
+        "theme_mode": "light",
+        "language": "en",
+        "created_at": "2026-07-02T19:13:31.517865+00:00",
+        "updated_at": "2026-07-02T19:13:31.517865+00:00"
+      }
+    ],
+    "locked_routines": [
+      {"id":"1b2cab35-d133-45b1-badd-bc28269c178c","text":"Daily team meeting","time":"09:00–09:15","cls":"tp-mtg","week":"all","day":"all","sort_order":1,"is_active":true},
+      {"id":"f52e937b-afcd-447c-8610-7c408b467759","text":"Import work time into HR program","time":"09:15–09:30","cls":"tp-imp","week":"all","day":"Monday,Thursday,Saturday","sort_order":2,"is_active":true},
+      {"id":"adc04db4-738e-44a2-901e-503ab11cdb1a","text":"Collect leave letters: Resort, Boutique & Manee Inn (1.5 hrs travel)","time":"10:00–11:30","cls":"tp-am","week":"all","day":"Wednesday,Saturday","sort_order":3,"is_active":true},
+      {"id":"61e9aa1e-bd9a-4bcc-b93e-7b1235a1850c","text":"Create work schedule for all 4 branches (due before day 25)","time":"10:00–12:00","cls":"tp-dead","week":"3","day":"Monday","sort_order":4,"is_active":true},
+      {"id":"bacf2c5a-4078-44e1-af96-ab43d574220e","text":"Check employee time arrive & leave records (due before day 25)","time":"10:00–11:30","cls":"tp-dead","week":"3","day":"Wednesday","sort_order":5,"is_active":true},
+      {"id":"85fd5eae-1b6c-4f09-840d-5153a0b81285","text":"Create arrive late report (due before day 25)","time":"13:00–14:00","cls":"tp-dead","week":"3","day":"Friday","sort_order":6,"is_active":true},
+      {"id":"8bd75de8-2196-4a54-b3f4-22972d081d63","text":"Entry leave letters into HR program","time":"15:00–17:00","cls":"tp-pm","week":"all","day":"all","sort_order":7,"is_active":true},
+      {"id":"949025a9-05aa-49b5-a3ab-9db5a704890c","text":"Update and announce QT before end of day","time":"16:30–17:00","cls":"tp-pm","week":"all","day":"Saturday","sort_order":8,"is_active":true},
+      {"id":"fe62ba71-da04-407f-8869-3950236f498b","text":"Clear employee resign letters & resign folders","time":"10:00–11:00","cls":"tp-dead","week":"day30","day":"all","sort_order":9,"is_active":true},
+      {"id":"4fc8a160-fcef-4156-ac35-aa796d84e783","text":"Check resigned employees returned uniforms","time":"11:00–11:30","cls":"tp-dead","week":"day30","day":"all","sort_order":10,"is_active":true}
+    ],
+    "custom_routines": [],
+    "months_data": [],
+    "monthly_archives": [],
+    "notes_count": 20
+  }
+}
