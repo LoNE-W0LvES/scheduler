@@ -51,7 +51,7 @@ export default function SidePanel({
           <div className="min-w-0 animate-fade-in flex-1">
             <div className="min-w-0">
               <div className="font-kanit font-bold text-base leading-tight text-[#111] dark:text-[#F0F0F0] truncate group-hover:text-[#1D9E75] transition-colors">
-                {t('appTitle') || 'Schaduler'}
+                {t('appTitle') || 'Scheduler'}
               </div>
               <div className="text-[10px] uppercase font-semibold text-[#1D9E75] dark:text-[#26D09A]">
                 Enterprise

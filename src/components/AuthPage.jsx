@@ -92,7 +92,7 @@ export default function AuthPage({ onToggleTheme, themeMode }) {
             📋
           </div>
           <div>
-            <span className="font-kanit text-xl font-bold tracking-tight">Schaduler</span>
+            <span className="font-kanit text-xl font-bold tracking-tight">Scheduler</span>
             <span className="hidden sm:inline-block ml-2 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-[#1D9E75]/10 text-[#1D9E75] dark:text-[#26D09A] border border-[#1D9E75]/30">
               v2.0 Enterprise
             </span>

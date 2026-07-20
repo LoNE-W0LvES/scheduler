@@ -49,10 +49,10 @@ export const T = {
     multilingualSubtitle: "Click any language below to switch the entire application interface dynamically.",
     signUpSub: "Sign up to start organizing your team tasks",
     signInSub: "Enter your credentials to access your planner",
-    footerText: "© 2026 Schaduler — Built for modern multi-branch enterprise teams.",
+    footerText: "© 2026 Scheduler — Built for modern multi-branch enterprise teams.",
 
     // App name
-    appTitle: 'Schaduler',
+    appTitle: 'Scheduler',
     appSubtitle: 'Your HR workflow, organized',
 
     // Auth
@@ -211,7 +211,7 @@ export const T = {
     addLockedRoutine: 'Add Locked Routine',
 
     // Lock screen
-    accessGate: 'Schaduler Access Gate',
+    accessGate: 'Scheduler Access Gate',
     securityVerification: 'Security verification via Tic-Tac-Toe',
     makeMove: 'Make Your Move (X)',
     victory: 'Victory Achieved!',
@@ -290,9 +290,9 @@ export const T = {
     multilingualSubtitle: "পুরো অ্যাপ্লিকেশন ইন্টারফেস পরিবর্তন করতে নিচের যেকোনো ভাষায় ক্লিক করুন।",
     signUpSub: "আপনার টিমের কাজ গুছাতে সাইন আপ করুন",
     signInSub: "প্ল্যানারে প্রবেশ করতে আপনার লগইন তথ্য দিন",
-    footerText: "© 2026 Schaduler — আধুনিক মাল্টি-ব্রাঞ্চ এন্টারপ্রাইজ টিমের জন্য তৈরি।",
+    footerText: "© 2026 Scheduler — আধুনিক মাল্টি-ব্রাঞ্চ এন্টারপ্রাইজ টিমের জন্য তৈরি।",
 
-    appTitle: 'Schaduler',
+    appTitle: 'Scheduler',
     appSubtitle: 'আপনার HR কার্যপ্রবাহ, সংগঠিত',
     signIn: 'সাইন ইন',
     signUp: 'অ্যাকাউন্ট তৈরি',
@@ -435,7 +435,7 @@ export const T = {
     routineDisabled: 'রুটিন নিষ্ক্রিয় করা হয়েছে',
     addLockedRoutine: 'লক করা রুটিন যোগ করুন',
 
-    accessGate: 'Schaduler অ্যাক্সেস গেট',
+    accessGate: 'Scheduler অ্যাক্সেস গেট',
     securityVerification: 'টিক-ট্যাক-টো এর মাধ্যমে নিরাপত্তা যাচাইকরণ',
     makeMove: 'আপনার চাল দিন (X)',
     victory: 'বিজয় অর্জিত হয়েছে!',
@@ -513,9 +513,9 @@ export const T = {
     multilingualSubtitle: "คลิกภาษาด้านล่างเพื่อเปลี่ยนภาษาอินเทอร์เฟซของทั้งแอปพลิเคชันทันที",
     signUpSub: "ลงทะเบียนเพื่อเริ่มจัดระเบียบงานของทีมคุณ",
     signInSub: "ป้อนข้อมูลเข้าสู่ระบบของคุณเพื่อเข้าถึงตารางงาน",
-    footerText: "© 2026 Schaduler — สร้างขึ้นสำหรับทีมงานระดับองค์กรหลายสาขา",
+    footerText: "© 2026 Scheduler — สร้างขึ้นสำหรับทีมงานระดับองค์กรหลายสาขา",
 
-    appTitle: 'Schaduler',
+    appTitle: 'Scheduler',
     appSubtitle: 'จัดการงาน HR ของคุณอย่างเป็นระบบ',
     signIn: 'เข้าสู่ระบบ',
     signUp: 'สร้างบัญชี',
@@ -658,7 +658,7 @@ export const T = {
     routineDisabled: 'ปิดใช้งานงานประจำแล้ว',
     addLockedRoutine: 'เพิ่มงานประจำระบบ',
 
-    accessGate: 'ระบบรักษาความปลอดภัย Schaduler',
+    accessGate: 'ระบบรักษาความปลอดภัย Scheduler',
     securityVerification: 'ยืนยันตัวตนผ่านเกม Tic-Tac-Toe',
     makeMove: 'ตาของคุณเดิน (X)',
     victory: 'คุณชนะแล้ว!',
@@ -736,9 +736,9 @@ export const T = {
     multilingualSubtitle: "下の言語をクリックすると、アプリ全体のインターフェース言語が即座に切り替わります。",
     signUpSub: "アカウントを作成してチームのタスク管理を開始",
     signInSub: "認証情報を入力してプランナーにアクセス",
-    footerText: "© 2026 Schaduler — 現代のマルチブランチ企業チームのために構築。",
+    footerText: "© 2026 Scheduler — 現代のマルチブランチ企業チームのために構築。",
 
-    appTitle: 'Schaduler',
+    appTitle: 'Scheduler',
     appSubtitle: '人事ワークフローを整理',
     signIn: 'ログイン', signUp: 'アカウント作成', signOut: 'ログアウト',
     email: 'メールアドレス', password: 'パスワード', confirmPassword: 'パスワード確認',
@@ -766,7 +766,7 @@ export const T = {
     taskTracker: 'タスクトラッカー', all: 'すべて', pending: '保留中', skipped: 'スキップ', status: 'ステータス', trackerReset: 'リセット済み', confirmReset: 'ステータスをリセットしますか？', noData: 'タスクなし', noTasksToday: '今日のタスクはありません',
     closeArchiveMonth: '月次締め＆アーカイブ', archiveThisMonth: '今月をアーカイブ', currentMonth: '今月', deleteArchive: 'アーカイブを削除', archived: 'アーカイブ済み', inProgress: '進行中', total: '合計', remaining: '残り', notClosedYet: '未締め',
     adminPanel: '管理者パネル', adminSub: '固定ルーティンと権限の管理', lockedRoutinesAdmin: '固定ルーティン', userManagement: 'ユーザー管理', addUser: 'ユーザー追加', makeAdmin: '管理者に設定', demote: '一般に変更', active: '有効', disabled: '無効', routineAdded: '追加済み', routineUpdated: '更新済み', routineDeleted: '削除済み', routineEnabled: '有効化済み', routineDisabled: '無効化済み', addLockedRoutine: '固定ルーティン追加',
-    accessGate: 'Schadulerアクセスゲート', securityVerification: '三目並べによる認証', makeMove: '手を選んでください (X)', victory: '勝利！', stalemate: '引き分け！', aiWon: 'AIの勝利！', verificationComplete: '認証完了。ワークスペースが開かれました！', tryAgain: 'もう一度！AIに勝ってロックを解除してください。', aiCalculating: 'AIが思考中...', currentTurn: '現在の手番: プレイヤー', winRound: 'アプリに入るにはゲームに勝利してください。', easyAI: '簡単AI', smartAI: '賢いAI', hardAI: '最強AI', twoPlayer: '2人対戦', you: 'あなた', draws: '引き分け', unlockEnter: 'ワークスペースに入る', playAnother: 'もう一回遊ぶ', resetBoard: 'リセット', urgentMeeting: '緊急のHR会議ですか？緊急バイパス',
+    accessGate: 'Schedulerアクセスゲート', securityVerification: '三目並べによる認証', makeMove: '手を選んでください (X)', victory: '勝利！', stalemate: '引き分け！', aiWon: 'AIの勝利！', verificationComplete: '認証完了。ワークスペースが開かれました！', tryAgain: 'もう一度！AIに勝ってロックを解除してください。', aiCalculating: 'AIが思考中...', currentTurn: '現在の手番: プレイヤー', winRound: 'アプリに入るにはゲームに勝利してください。', easyAI: '簡単AI', smartAI: '賢いAI', hardAI: '最強AI', twoPlayer: '2人対戦', you: 'あなた', draws: '引き分け', unlockEnter: 'ワークスペースに入る', playAnother: 'もう一回遊ぶ', resetBoard: 'リセット', urgentMeeting: '緊急のHR会議ですか？緊急バイパス',
     loading: '読み込み中', saving: '保存中...', saved: '保存済み', language: '言語', light: 'ライト', dark: 'ダーク',
     routines: 'ルーティン', lockApp: 'アプリをロック', lightMode: 'ライトモード', darkMode: 'ダークモード',
   },
@@ -804,9 +804,9 @@ export const T = {
     multilingualSubtitle: "点击下方任一语言，即可动态切换整个应用程序界面。",
     signUpSub: "注册账号，开始高效组织团队任务",
     signInSub: "输入您的凭据登录规划系统",
-    footerText: "© 2026 Schaduler — 为现代多分支企业团队倾力打造。",
+    footerText: "© 2026 Scheduler — 为现代多分支企业团队倾力打造。",
 
-    appTitle: 'Schaduler', appSubtitle: '组织您的人事工作流程',
+    appTitle: 'Scheduler', appSubtitle: '组织您的人事工作流程',
     signIn: '登录', signUp: '创建账户', signOut: '退出', email: '邮箱地址', password: '密码', confirmPassword: '确认密码', displayName: '显示名称', noAccount: '没有账户？', haveAccount: '已有账户？', createOne: '创建一个',
     weekly: '周视图', calendar: '日历', tracker: '追踪器', notes: '笔记', manage: '管理', archive: '归档', admin: '管理员', workspace: '工作区',
     month_0: '一月', month_1: '二月', month_2: '三月', month_3: '四月', month_4: '五月', month_5: '六月', month_6: '七月', month_7: '八月', month_8: '九月', month_9: '十月', month_10: '十一月', month_11: '十二月',
@@ -831,7 +831,7 @@ export const T = {
     taskTracker: '任务追踪', all: '全部', pending: '待处理', skipped: '已跳过', status: '状态', trackerReset: '追踪器已重置', confirmReset: '确认重置所有状态为待处理吗？', noData: '暂无任务', noTasksToday: '今天没有任务',
     closeArchiveMonth: '结算与归档月度', archiveThisMonth: '归档本月', currentMonth: '当前月', deleteArchive: '删除此归档', archived: '已归档', inProgress: '进行中', total: '总计', remaining: '剩余', notClosedYet: '尚未结算',
     adminPanel: '管理面板', adminSub: '管理系统固定任务与用户权限', lockedRoutinesAdmin: '固定任务', userManagement: '用户管理', addUser: '添加用户', makeAdmin: '设为管理员', demote: '降为普通用户', active: '激活', disabled: '禁用', routineAdded: '任务已添加', routineUpdated: '任务已更新', routineDeleted: '任务已删除', routineEnabled: '已启用', routineDisabled: '已禁用', addLockedRoutine: '添加系统任务',
-    accessGate: 'Schaduler验证关卡', securityVerification: '井字棋安全验证', makeMove: '请走棋 (X)', victory: '胜利！', stalemate: '平局！', aiWon: 'AI赢了！', verificationComplete: '验证通过，已解锁HR计划空间！', tryAgain: '再试一次！战胜AI即可进入。', aiCalculating: 'AI正在思考...', currentTurn: '当前回合: 玩家', winRound: '获胜一局即可进入应用。', easyAI: '简单AI', smartAI: '聪明AI', hardAI: '困难AI', twoPlayer: '双人对弈', you: '你', draws: '平局', unlockEnter: '解锁并进入空间', playAnother: '再玩一局', resetBoard: '重置棋盘', urgentMeeting: '紧急HR会议？紧急跳过',
+    accessGate: 'Scheduler验证关卡', securityVerification: '井字棋安全验证', makeMove: '请走棋 (X)', victory: '胜利！', stalemate: '平局！', aiWon: 'AI赢了！', verificationComplete: '验证通过，已解锁HR计划空间！', tryAgain: '再试一次！战胜AI即可进入。', aiCalculating: 'AI正在思考...', currentTurn: '当前回合: 玩家', winRound: '获胜一局即可进入应用。', easyAI: '简单AI', smartAI: '聪明AI', hardAI: '困难AI', twoPlayer: '双人对弈', you: '你', draws: '平局', unlockEnter: '解锁并进入空间', playAnother: '再玩一局', resetBoard: '重置棋盘', urgentMeeting: '紧急HR会议？紧急跳过',
     loading: '加载中', saving: '保存中...', saved: '已保存', language: '语言', light: '浅色', dark: '深色',
     routines: '日常任务', lockApp: '锁定应用', lightMode: '浅色模式', darkMode: '深色模式',
   },
@@ -869,9 +869,9 @@ export const T = {
     multilingualSubtitle: "아래 언어를 클릭하여 애플리케이션 전체 인터페이스를 즉시 전환하세요.",
     signUpSub: "가입하고 팀 작업 조직을 시작하세요",
     signInSub: "플래너에 접속하려면 계정 정보를 입력하세요",
-    footerText: "© 2026 Schaduler — 현대적인 다중 지점 엔터프라이즈 팀을 위해 구축됨.",
+    footerText: "© 2026 Scheduler — 현대적인 다중 지점 엔터프라이즈 팀을 위해 구축됨.",
 
-    appTitle: 'Schaduler', appSubtitle: '인사 워크플로우 정리',
+    appTitle: 'Scheduler', appSubtitle: '인사 워크플로우 정리',
     signIn: '로그인', signUp: '계정 만들기', signOut: '로그아웃', email: '이메일 주소', password: '비밀번호', confirmPassword: '비밀번호 확인', displayName: '표시 이름', noAccount: '계정이 없으신가요?', haveAccount: '이미 계정이 있으신가요?', createOne: '만들기',
     weekly: '주간', calendar: '달력', tracker: '추적기', notes: '메모', manage: '관리', archive: '보관', admin: '관리자', workspace: '작업 공간',
     month_0: '1월', month_1: '2월', month_2: '3월', month_3: '4월', month_4: '5월', month_5: '6월', month_6: '7월', month_7: '8월', month_8: '9월', month_9: '10월', month_10: '11월', month_11: '12월',
@@ -896,7 +896,7 @@ export const T = {
     taskTracker: '작업 추적기', all: '전체', pending: '대기 중', skipped: '건너뜀', status: '상태', trackerReset: '추적기 초기화됨', confirmReset: '모든 추적기 상태를 대기 중으로 초기화하시겠습니까?', noData: '작업 없음', noTasksToday: '오늘 작업이 없습니다',
     closeArchiveMonth: '월 마감 및 보관', archiveThisMonth: '이 달 보관하기', currentMonth: '현재 달', deleteArchive: '보관 삭제', archived: '보관됨', inProgress: '진행 중', total: '합계', remaining: '남은 작업', notClosedYet: '마감되지 않음',
     adminPanel: '관리자 패널', adminSub: '고정 루틴 및 사용자 권한 관리', lockedRoutinesAdmin: '고정 루틴', userManagement: '사용자 관리', addUser: '사용자 추가', makeAdmin: '관리자로 설정', demote: '일반 사용자로 변경', active: '활성', disabled: '비활성', routineAdded: '루틴 추가됨', routineUpdated: '루틴 업데이트됨', routineDeleted: '루틴 삭제됨', routineEnabled: '루틴 활성화됨', routineDisabled: '루틴 비활성화됨', addLockedRoutine: '고정 루틴 추가',
-    accessGate: 'Schaduler 접근 게이트', securityVerification: '틱택토 보안 검증', makeMove: '수를 두세요 (X)', victory: '승리했습니다!', stalemate: '무승부!', aiWon: 'AI의 승리!', verificationComplete: '검증 완료. HR 작업 공간이 열렸습니다!', tryAgain: '다시 시도하세요! AI를 이겨야 열립니다.', aiCalculating: 'AI 계산 중...', currentTurn: '현재 차례: 플레이어', winRound: '틱택토 게임에서 승리하면 입장합니다.', easyAI: '쉬운 AI', smartAI: '똑똑한 AI', hardAI: '어려운 AI', twoPlayer: '2인용', you: '당신', draws: '무승부', unlockEnter: '작업 공간 열기', playAnother: '재미로 한 판 더', resetBoard: '보드 리셋', urgentMeeting: '긴급 HR 회의 중이신가요? 긴급 통과',
+    accessGate: 'Scheduler 접근 게이트', securityVerification: '틱택토 보안 검증', makeMove: '수를 두세요 (X)', victory: '승리했습니다!', stalemate: '무승부!', aiWon: 'AI의 승리!', verificationComplete: '검증 완료. HR 작업 공간이 열렸습니다!', tryAgain: '다시 시도하세요! AI를 이겨야 열립니다.', aiCalculating: 'AI 계산 중...', currentTurn: '현재 차례: 플레이어', winRound: '틱택토 게임에서 승리하면 입장합니다.', easyAI: '쉬운 AI', smartAI: '똑똑한 AI', hardAI: '어려운 AI', twoPlayer: '2인용', you: '당신', draws: '무승부', unlockEnter: '작업 공간 열기', playAnother: '재미로 한 판 더', resetBoard: '보드 리셋', urgentMeeting: '긴급 HR 회의 중이신가요? 긴급 통과',
     loading: '로딩 중', saving: '저장 중...', saved: '저장됨', language: '언어', light: '라이트', dark: '다크',
   },
 
@@ -933,9 +933,9 @@ export const T = {
     multilingualSubtitle: "Nhấp vào bất kỳ ngôn ngữ nào bên dưới để chuyển đổi toàn bộ giao diện ứng dụng ngay lập tức.",
     signUpSub: "Đăng ký để bắt đầu quản lý công việc của nhóm bạn",
     signInSub: "Nhập thông tin xác thực để truy cập lịch trình",
-    footerText: "© 2026 Schaduler — Được xây dựng cho các nhóm doanh nghiệp nhiều chi nhánh hiện đại.",
+    footerText: "© 2026 Scheduler — Được xây dựng cho các nhóm doanh nghiệp nhiều chi nhánh hiện đại.",
 
-    appTitle: 'Schaduler', appSubtitle: 'Quản lý công việc nhân sự',
+    appTitle: 'Scheduler', appSubtitle: 'Quản lý công việc nhân sự',
     signIn: 'Đăng nhập', signUp: 'Tạo tài khoản', signOut: 'Đăng xuất', email: 'Email', password: 'Mật khẩu', confirmPassword: 'Xác nhận mật khẩu', displayName: 'Tên hiển thị', noAccount: 'Chưa có tài khoản?', haveAccount: 'Đã có tài khoản?', createOne: 'Tạo mới',
     weekly: 'Tuần', calendar: 'Lịch', tracker: 'Theo dõi', notes: 'Ghi chú', manage: 'Quản lý', archive: 'Lưu trữ', admin: 'Quản trị viên', workspace: 'Không gian làm việc',
     month_0: 'Tháng 1', month_1: 'Tháng 2', month_2: 'Tháng 3', month_3: 'Tháng 4', month_4: 'Tháng 5', month_5: 'Tháng 6', month_6: 'Tháng 7', month_7: 'Tháng 8', month_8: 'Tháng 9', month_9: 'Tháng 10', month_10: 'Tháng 11', month_11: 'Tháng 12',
@@ -960,7 +960,7 @@ export const T = {
     taskTracker: 'Theo dõi công việc', all: 'Tất cả', pending: 'Đang chờ', skipped: 'Bỏ qua', status: 'Trạng thái', trackerReset: 'Đã đặt lại theo dõi', confirmReset: 'Đặt lại tất cả trạng thái về đang chờ?', noData: 'Không có công việc', noTasksToday: 'Hôm nay không có công việc',
     closeArchiveMonth: 'Chốt & Lưu trữ tháng', archiveThisMonth: 'Lưu trữ tháng này', currentMonth: 'Tháng hiện tại', deleteArchive: 'Xóa bản lưu này', archived: 'Đã lưu trữ', inProgress: 'Đang thực hiện', total: 'Tổng số', remaining: 'Còn lại', notClosedYet: 'Chưa chốt tháng',
     adminPanel: 'Bảng quản trị', adminSub: 'Quản lý công việc hệ thống và phân quyền người dùng', lockedRoutinesAdmin: 'Định kỳ hệ thống', userManagement: 'Quản lý người dùng', addUser: 'Thêm người dùng', makeAdmin: 'Đặt làm Quản trị', demote: 'Xuống người dùng thường', active: 'Hoạt động', disabled: 'Vô hiệu hóa', routineAdded: 'Đã thêm', routineUpdated: 'Đã cập nhật', routineDeleted: 'Đã xóa', routineEnabled: 'Đã kích hoạt', routineDisabled: 'Đã vô hiệu hóa', addLockedRoutine: 'Thêm định kỳ hệ thống',
-    accessGate: 'Cổng xác thực Schaduler', securityVerification: 'Xác thực bảo mật qua Tic-Tac-Toe', makeMove: 'Nước đi của bạn (X)', victory: 'Chiến thắng!', stalemate: 'Hòa!', aiWon: 'AI thắng cuộc!', verificationComplete: 'Xác thực hoàn tất. Bạn đã mở khóa không gian làm việc!', tryAgain: 'Thử lại! Hãy thắng AI để vào không gian làm việc.', aiCalculating: 'AI đang tính toán...', currentTurn: 'Lượt hiện tại: Người chơi', winRound: 'Thắng một ván Tic-Tac-Toe để truy cập ứng dụng.', easyAI: 'AI Dễ', smartAI: 'AI Thông minh', hardAI: 'AI Khó', twoPlayer: '2 Người chơi', you: 'Bạn', draws: 'Hòa', unlockEnter: 'Mở khóa & Vào làm việc', playAnother: 'Chơi thêm ván nữa', resetBoard: 'Đặt lại bàn cờ', urgentMeeting: 'Đang họp HR gấp? Bỏ qua khẩn cấp',
+    accessGate: 'Cổng xác thực Scheduler', securityVerification: 'Xác thực bảo mật qua Tic-Tac-Toe', makeMove: 'Nước đi của bạn (X)', victory: 'Chiến thắng!', stalemate: 'Hòa!', aiWon: 'AI thắng cuộc!', verificationComplete: 'Xác thực hoàn tất. Bạn đã mở khóa không gian làm việc!', tryAgain: 'Thử lại! Hãy thắng AI để vào không gian làm việc.', aiCalculating: 'AI đang tính toán...', currentTurn: 'Lượt hiện tại: Người chơi', winRound: 'Thắng một ván Tic-Tac-Toe để truy cập ứng dụng.', easyAI: 'AI Dễ', smartAI: 'AI Thông minh', hardAI: 'AI Khó', twoPlayer: '2 Người chơi', you: 'Bạn', draws: 'Hòa', unlockEnter: 'Mở khóa & Vào làm việc', playAnother: 'Chơi thêm ván nữa', resetBoard: 'Đặt lại bàn cờ', urgentMeeting: 'Đang họp HR gấp? Bỏ qua khẩn cấp',
     loading: 'Đang tải', saving: 'Đang lưu...', saved: 'Đã lưu', language: 'Ngôn ngữ', light: 'Sáng', dark: 'Tối',
   },
 
@@ -997,9 +997,9 @@ export const T = {
     multilingualSubtitle: "संपूर्ण एप्लिकेशन इंटरफ़ेस को गतिशील रूप से बदलने के लिए नीचे किसी भी भाषा पर क्लिक करें।",
     signUpSub: "अपनी टीम के कार्यों को व्यवस्थित करने के लिए साइन अप करें",
     signInSub: "अपने प्लानर तक पहुँचने के लिए क्रेडेंशियल दर्ज करें",
-    footerText: "© 2026 Schaduler — आधुनिक मल्टी-ब्रांच एंटरप्राइज़ टीमों के लिए निर्मित।",
+    footerText: "© 2026 Scheduler — आधुनिक मल्टी-ब्रांच एंटरप्राइज़ टीमों के लिए निर्मित।",
 
-    appTitle: 'Schaduler', appSubtitle: 'आपका HR वर्कफ्लो व्यवस्थित',
+    appTitle: 'Scheduler', appSubtitle: 'आपका HR वर्कफ्लो व्यवस्थित',
     signIn: 'साइन इन', signUp: 'खाता बनाएं', signOut: 'साइन आउट', email: 'ईमेल', password: 'पासवर्ड', confirmPassword: 'पासवर्ड की पुष्टि करें', displayName: 'प्रदर्शन नाम', noAccount: 'खाता नहीं है?', haveAccount: 'पहले से खाता है?', createOne: 'बनाएं',
     weekly: 'साप्ताहिक', calendar: 'कैलेंडर', tracker: 'ट्रैकर', notes: 'नोट्स', manage: 'प्रबंधन', archive: 'संग्रह', admin: 'व्यवस्थापक', workspace: 'कार्यक्षेत्र',
     month_0: 'जनवरी', month_1: 'फ़रवरी', month_2: 'मार्च', month_3: 'अप्रैल', month_4: 'मई', month_5: 'जून', month_6: 'जुलाई', month_7: 'अगस्त', month_8: 'सितंबर', month_9: 'अक्टूबर', month_10: 'नवंबर', month_11: 'दिसंबर',
@@ -1024,7 +1024,7 @@ export const T = {
     taskTracker: 'कार्य ट्रैकर', all: 'सभी', pending: 'लंबित', skipped: 'छोड़ा गया', status: 'स्थिति', trackerReset: 'ट्रैकर रीसेट किया गया', confirmReset: 'क्या सभी ट्रैकर स्थिति को लंबित पर रीसेट करना चाहते हैं?', noData: 'कोई कार्य नहीं', noTasksToday: 'आज कोई कार्य नहीं है',
     closeArchiveMonth: 'महीना समाप्त और संग्रहीत करें', archiveThisMonth: 'इस महीने को संग्रहीत करें', currentMonth: 'वर्तमान महीना', deleteArchive: 'इस संग्रह को हटाएं', archived: 'संग्रहीत', inProgress: 'प्रगति पर', total: 'कुल', remaining: 'शेष', notClosedYet: 'अभी बंद नहीं हुआ',
     adminPanel: 'एडमिन पैनल', adminSub: 'सिस्टम रूटीन और उपयोगकर्ता अनुमतियां प्रबंधित करें', lockedRoutinesAdmin: 'सिस्टम रूटीन', userManagement: 'उपयोगकर्ता प्रबंधन', addUser: 'उपयोगकर्ता जोड़ें', makeAdmin: 'एडमिन बनाएं', demote: 'सामान्य उपयोगकर्ता बनाएं', active: 'सक्रिय', disabled: 'निष्क्रिय', routineAdded: 'रूटीन जोड़ा गया', routineUpdated: 'रूटीन अपडेट किया गया', routineDeleted: 'रूटीन हटाया गया', routineEnabled: 'सक्रिय किया गया', routineDisabled: 'निष्क्रिय किया गया', addLockedRoutine: 'सिस्टम रूटीन जोड़ें',
-    accessGate: 'Schaduler सुरक्षा गेट', securityVerification: 'टिक-टैक-टो द्वारा सुरक्षा सत्यापन', makeMove: 'अपनी चाल चलें (X)', victory: 'जीत हासिल हुई!', stalemate: 'मुकाबला बराबरी पर!', aiWon: 'AI ने बाजी मारी!', verificationComplete: 'सत्यापन पूर्ण। आपका कार्यक्षेत्र खुल गया है!', tryAgain: 'पुनः प्रयास करें! कार्यक्षेत्र खोलने के लिए AI को हराएं।', aiCalculating: 'AI सोच रहा है...', currentTurn: 'वर्तमान बारी: खिलाड़ी', winRound: 'एप्लिकेशन में प्रवेश करने के लिए टिक-टैक-টো का एक राउंड जीतें।', easyAI: 'आसान AI', smartAI: 'स्मार्ट AI', hardAI: 'कठिन AI', twoPlayer: '2 खिलाड़ी', you: 'आप', draws: 'बराबरी', unlockEnter: 'अनलॉक करें और कार्यक्षेत्र में प्रवेश करें', playAnother: 'मनोरंजन के लिए एक और राउंड खेलें', resetBoard: 'बोर्ड रीसेट करें', urgentMeeting: 'अत्यावश्यक HR बैठक? आपातकालीन बाईपास',
+    accessGate: 'Scheduler सुरक्षा गेट', securityVerification: 'टिक-टैक-टो द्वारा सुरक्षा सत्यापन', makeMove: 'अपनी चाल चलें (X)', victory: 'जीत हासिल हुई!', stalemate: 'मुकाबला बराबरी पर!', aiWon: 'AI ने बाजी मारी!', verificationComplete: 'सत्यापन पूर्ण। आपका कार्यक्षेत्र खुल गया है!', tryAgain: 'पुनः प्रयास करें! कार्यक्षेत्र खोलने के लिए AI को हराएं।', aiCalculating: 'AI सोच रहा है...', currentTurn: 'वर्तमान बारी: खिलाड़ी', winRound: 'एप्लिकेशन में प्रवेश करने के लिए टिक-टैक-টো का एक राउंड जीतें।', easyAI: 'आसान AI', smartAI: 'स्मार्ट AI', hardAI: 'कठिन AI', twoPlayer: '2 खिलाड़ी', you: 'आप', draws: 'बराबरी', unlockEnter: 'अनलॉक करें और कार्यक्षेत्र में प्रवेश करें', playAnother: 'मनोरंजन के लिए एक और राउंड खेलें', resetBoard: 'बोर्ड रीसेट करें', urgentMeeting: 'अत्यावश्यक HR बैठक? आपातकालीन बाईपास',
     loading: 'लोड हो रहा है', saving: 'सहेजा जा रहा है...', saved: 'सहेजा गया', language: 'भाषा', light: 'लाइट', dark: 'डार्क',
   },
 
@@ -1061,9 +1061,9 @@ export const T = {
     multilingualSubtitle: "Klik bahasa apa pun di bawah ini untuk mengubah seluruh antarmuka aplikasi secara dinamis.",
     signUpSub: "Daftar untuk mulai mengatur tugas tim Anda",
     signInSub: "Masukkan kredensial Anda untuk mengakses perencana",
-    footerText: "© 2026 Schaduler — Dibangun untuk tim perusahaan multi-cabang modern.",
+    footerText: "© 2026 Scheduler — Dibangun untuk tim perusahaan multi-cabang modern.",
 
-    appTitle: 'Schaduler', appSubtitle: 'Alur kerja HR Anda, terorganisir',
+    appTitle: 'Scheduler', appSubtitle: 'Alur kerja HR Anda, terorganisir',
     signIn: 'Masuk', signUp: 'Buat Akun', signOut: 'Keluar', email: 'Email', password: 'Kata Sandi', confirmPassword: 'Konfirmasi Kata Sandi', displayName: 'Nama Tampilan', noAccount: 'Belum punya akun?', haveAccount: 'Sudah punya akun?', createOne: 'Buat',
     weekly: 'Mingguan', calendar: 'Kalender', tracker: 'Pelacak', notes: 'Catatan', manage: 'Kelola', archive: 'Arsip', admin: 'Admin', workspace: 'Ruang Kerja',
     month_0: 'Januari', month_1: 'Februari', month_2: 'Maret', month_3: 'April', month_4: 'Mei', month_5: 'Juni', month_6: 'Juli', month_7: 'Agustus', month_8: 'September', month_9: 'Oktober', month_10: 'November', month_11: 'Desember',
@@ -1088,7 +1088,7 @@ export const T = {
     taskTracker: 'Pelacak Tugas', all: 'Semua', pending: 'Tertunda', skipped: 'Dilewati', status: 'Status', trackerReset: 'Pelacak diatur ulang', confirmReset: 'Atur ulang semua status menjadi tertunda?', noData: 'Tidak ada tugas', noTasksToday: 'Tidak ada tugas hari ini',
     closeArchiveMonth: 'Tutup & Arsip Bulan', archiveThisMonth: 'Arsip Bulan Ini', currentMonth: 'Bulan Berjalan', deleteArchive: 'Hapus arsip ini', archived: 'Diarsipkan', inProgress: 'Sedang Berjalan', total: 'Total', remaining: 'Tersisa', notClosedYet: 'Belum ditutup',
     adminPanel: 'Panel Admin', adminSub: 'Kelola rutinitas sistem dan izin pengguna', lockedRoutinesAdmin: 'Rutinitas Sistem', userManagement: 'Manajemen Pengguna', addUser: 'Tambah Pengguna', makeAdmin: 'Jadikan Admin', demote: 'Turunkan ke Pengguna', active: 'Aktif', disabled: 'Nonaktif', routineAdded: 'Rutinitas ditambahkan', routineUpdated: 'Rutinitas diperbarui', routineDeleted: 'Rutinitas dihapus', routineEnabled: 'Diaktifkan', routineDisabled: 'Dinonaktifkan', addLockedRoutine: 'Tambah Rutinitas Sistem',
-    accessGate: 'Gerbang Akses Schaduler', securityVerification: 'Verifikasi keamanan melalui Tic-Tac-Toe', makeMove: 'Giliran Anda (X)', victory: 'Kemenangan Diraih!', stalemate: 'Seri!', aiWon: 'AI Memenangkan Ronde!', verificationComplete: 'Verifikasi selesai. Ruang kerja HR Anda telah terbuka!', tryAgain: 'Coba lagi! Kalahkan AI untuk masuk ke ruang kerja.', aiCalculating: 'AI sedang berpikir...', currentTurn: 'Giliran: Pemain', winRound: 'Menangkan satu ronde Tic-Tac-Toe untuk masuk.', easyAI: 'AI Mudah', smartAI: 'AI Pintar', hardAI: 'AI Sulit', twoPlayer: '2 Pemain', you: 'Anda', draws: 'Seri', unlockEnter: 'Buka Kunci & Masuk Ruang Kerja', playAnother: 'Mainkan lagi untuk hiburan', resetBoard: 'Atur Ulang Papan', urgentMeeting: 'Rapat HR darurat? Lewati Khusus',
+    accessGate: 'Gerbang Akses Scheduler', securityVerification: 'Verifikasi keamanan melalui Tic-Tac-Toe', makeMove: 'Giliran Anda (X)', victory: 'Kemenangan Diraih!', stalemate: 'Seri!', aiWon: 'AI Memenangkan Ronde!', verificationComplete: 'Verifikasi selesai. Ruang kerja HR Anda telah terbuka!', tryAgain: 'Coba lagi! Kalahkan AI untuk masuk ke ruang kerja.', aiCalculating: 'AI sedang berpikir...', currentTurn: 'Giliran: Pemain', winRound: 'Menangkan satu ronde Tic-Tac-Toe untuk masuk.', easyAI: 'AI Mudah', smartAI: 'AI Pintar', hardAI: 'AI Sulit', twoPlayer: '2 Pemain', you: 'Anda', draws: 'Seri', unlockEnter: 'Buka Kunci & Masuk Ruang Kerja', playAnother: 'Mainkan lagi untuk hiburan', resetBoard: 'Atur Ulang Papan', urgentMeeting: 'Rapat HR darurat? Lewati Khusus',
     loading: 'Memuat', saving: 'Menyimpan...', saved: 'Tersimpan', language: 'Bahasa', light: 'Terang', dark: 'Gelap',
   },
 
@@ -1125,9 +1125,9 @@ export const T = {
     multilingualSubtitle: "Klik mana-mana bahasa di bawah untuk menukar keseluruhan antaramuka aplikasi secara dinamik.",
     signUpSub: "Daftar untuk mula mengatur tugas pasukan anda",
     signInSub: "Masukkan kelayakan anda untuk mengakses perancang",
-    footerText: "© 2026 Schaduler — Dibina untuk pasukan korporat pelbagai cawangan moden.",
+    footerText: "© 2026 Scheduler — Dibina untuk pasukan korporat pelbagai cawangan moden.",
 
-    appTitle: 'Schaduler', appSubtitle: 'Aliran kerja HR anda, teratur',
+    appTitle: 'Scheduler', appSubtitle: 'Aliran kerja HR anda, teratur',
     signIn: 'Log Masuk', signUp: 'Cipta Akaun', signOut: 'Log Keluar', email: 'E-mel', password: 'Kata Laluan', confirmPassword: 'Sahkan Kata Laluan', displayName: 'Nama Paparan', noAccount: 'Tiada akaun?', haveAccount: 'Sudah ada akaun?', createOne: 'Cipta',
     weekly: 'Mingguan', calendar: 'Kalendar', tracker: 'Penjejak', notes: 'Nota', manage: 'Urus', archive: 'Arkib', admin: 'Pentadbir', workspace: 'Ruang Kerja',
     month_0: 'Januari', month_1: 'Februari', month_2: 'Mac', month_3: 'April', month_4: 'Mei', month_5: 'Jun', month_6: 'Julai', month_7: 'Ogos', month_8: 'September', month_9: 'Oktober', month_10: 'November', month_11: 'Disember',
@@ -1152,7 +1152,7 @@ export const T = {
     taskTracker: 'Penjejak Tugas', all: 'Semua', pending: 'Tertunda', skipped: 'Dilepaskan', status: 'Status', trackerReset: 'Penjejak ditetap semula', confirmReset: 'Tetapkan semula semua status kepada tertunda?', noData: 'Tiada tugas', noTasksToday: 'Tiada tugas hari ini',
     closeArchiveMonth: 'Tutup & Arkib Bulan', archiveThisMonth: 'Arkib Bulan Ini', currentMonth: 'Bulan Semasa', deleteArchive: 'Padam arkib ini', archived: 'Diarkibkan', inProgress: 'Sedang Berjalan', total: 'Jumlah', remaining: 'Baki', notClosedYet: 'Belum ditutup',
     adminPanel: 'Panel Pentadbir', adminSub: 'Urus rutin sistem dan kebenaran pengguna', lockedRoutinesAdmin: 'Rutin Sistem', userManagement: 'Pengurusan Pengguna', addUser: 'Tambah Pengguna', makeAdmin: 'Jadikan Pentadbir', demote: 'Turunkan ke Pengguna', active: 'Aktif', disabled: 'Nyahaktif', routineAdded: 'Rutin ditambah', routineUpdated: 'Rutin dikemas kini', routineDeleted: 'Rutin dipadam', routineEnabled: 'Diaktifkan', routineDisabled: 'Dinyahaktifkan', addLockedRoutine: 'Tambah Rutin Sistem',
-    accessGate: 'Gerbang Akses Schaduler', securityVerification: 'Pengesahan keselamatan melalui Tic-Tac-Toe', makeMove: 'Giliran Anda (X)', victory: 'Kemenangan Dicapai!', stalemate: 'Seri!', aiWon: 'AI Memenangi Pusingan!', verificationComplete: 'Pengesahan selesai. Ruang kerja HR anda telah dibuka!', tryAgain: 'Cuba lagi! Kalahkan AI untuk masuk ke ruang kerja.', aiCalculating: 'AI sedang berfikir...', currentTurn: 'Giliran: Pemain', winRound: 'Menangi satu pusingan Tic-Tac-Toe untuk masuk.', easyAI: 'AI Mudah', smartAI: 'AI Pintar', hardAI: 'AI Sukar', twoPlayer: '2 Pemain', you: 'Anda', draws: 'Seri', unlockEnter: 'Buka Kunci & Masuk Ruang Kerja', playAnother: 'Main lagi untuk hiburan', resetBoard: 'Set Semula Papan', urgentMeeting: 'Mesyuarat HR terdesak? Lepas Khas',
+    accessGate: 'Gerbang Akses Scheduler', securityVerification: 'Pengesahan keselamatan melalui Tic-Tac-Toe', makeMove: 'Giliran Anda (X)', victory: 'Kemenangan Dicapai!', stalemate: 'Seri!', aiWon: 'AI Memenangi Pusingan!', verificationComplete: 'Pengesahan selesai. Ruang kerja HR anda telah dibuka!', tryAgain: 'Cuba lagi! Kalahkan AI untuk masuk ke ruang kerja.', aiCalculating: 'AI sedang berfikir...', currentTurn: 'Giliran: Pemain', winRound: 'Menangi satu pusingan Tic-Tac-Toe untuk masuk.', easyAI: 'AI Mudah', smartAI: 'AI Pintar', hardAI: 'AI Sukar', twoPlayer: '2 Pemain', you: 'Anda', draws: 'Seri', unlockEnter: 'Buka Kunci & Masuk Ruang Kerja', playAnother: 'Main lagi untuk hiburan', resetBoard: 'Set Semula Papan', urgentMeeting: 'Mesyuarat HR terdesak? Lepas Khas',
     loading: 'Memuatkan', saving: 'Menyimpan...', saved: 'Disimpan', language: 'Bahasa', light: 'Cerah', dark: 'Gelap',
   },
 };

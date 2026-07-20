@@ -1,5 +1,5 @@
 {
-  "name": "schaduler-client",
+  "name": "scheduler-client",
   "private": true,
   "version": "1.0.0",
   "type": "module",

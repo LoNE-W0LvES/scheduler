@@ -1,5 +1,5 @@
 /*
-# Schaduler Master Database Schema
+# Scheduler Master Database Schema
 # Complete, unified schema with Row Level Security (RLS) for clean database initialization.
 # Every new user starts with a clean slate.
 */
