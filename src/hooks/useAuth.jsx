@@ -108,6 +108,19 @@ export function AuthProvider({ children }) {
     return data;
   }, []);
 
+  // Sign in with Google
+  const signInWithGoogle = useCallback(async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+
+    if (error) throw error;
+    return data;
+  }, []);
+
   // Sign out
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
@@ -139,6 +152,7 @@ export function AuthProvider({ children }) {
     isAdmin: profile?.role === 'admin',
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     updateProfile,
     refreshProfile: () => user && fetchProfile(user.id)

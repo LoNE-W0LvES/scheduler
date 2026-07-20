@@ -57,6 +57,8 @@ export const T = {
 
     // Auth
     signIn: 'Sign In',
+    continueWithGoogle: 'Continue with Google',
+    or: 'OR',
     signUp: 'Create Account',
     signOut: 'Sign Out',
     email: 'Email Address',
